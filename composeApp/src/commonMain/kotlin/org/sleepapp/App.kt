@@ -1,12 +1,19 @@
 package org.sleepapp
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.TabNavigator
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinContext
-import org.sleepapp.presentation.navigation.BottomNavigation
-
+import org.sleepapp.presentation.alarm.AlarmTab
+import org.sleepapp.presentation.navigation.TabNavigationItem
+import org.sleepapp.presentation.notes.NotesTab
+import org.sleepapp.presentation.profile.ProfileTab
+import org.sleepapp.presentation.statistics.StatisticsTab
 
 
 @Composable
@@ -14,7 +21,22 @@ import org.sleepapp.presentation.navigation.BottomNavigation
 fun App() {
     KoinContext {
         MaterialTheme {
-            BottomNavigation()
+            TabNavigator(tab = AlarmTab){
+                Scaffold(
+                    content = { paddingValues ->
+                        CurrentTab()
+                    },
+                    bottomBar = {
+                        NavigationBar {
+                            TabNavigationItem(AlarmTab)
+                            TabNavigationItem(StatisticsTab)
+                            TabNavigationItem(NotesTab)
+                            TabNavigationItem(ProfileTab)
+                        }
+                    },
+                )
+            }
+
         }
     }
 }

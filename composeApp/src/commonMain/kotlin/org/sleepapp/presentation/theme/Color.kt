@@ -1,4 +1,4 @@
-package org.sleepapp.presentation
+package org.sleepapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

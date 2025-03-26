@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import cafe.adriel.voyager.navigator.Navigator
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.sleepapp.di.androidDatabaseModule
+import org.sleepapp.di.appModule
 import org.sleepapp.di.initKoin
 
 
@@ -15,10 +17,12 @@ class MainActivity : ComponentActivity() {
 
         initKoin {
             androidContext(this@MainActivity)
+            modules(androidDatabaseModule, appModule)
             androidLogger()
         }
 
-        setContent {
+        setContent{
+
             App()
         }
     }

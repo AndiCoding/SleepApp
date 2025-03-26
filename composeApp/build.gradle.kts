@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 
 plugins {
@@ -8,9 +9,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-
-
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.room)
     id("com.google.devtools.ksp")
 
 
@@ -41,26 +41,31 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
 
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
-
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.koin.compose.viewmodel.nav)
+            implementation(libs.koin.core)
+
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
 
 
             implementation(libs.voyager.navigator)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
+
 
         }
     }
@@ -95,7 +100,17 @@ android {
 
 dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.androidx.material3.android)
     debugImplementation(compose.uiTooling)
     implementation(libs.voyager.screenmodel)
+
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+}
+
+room {
+ schemaDirectory("$projectDir/schemas")
 }
 

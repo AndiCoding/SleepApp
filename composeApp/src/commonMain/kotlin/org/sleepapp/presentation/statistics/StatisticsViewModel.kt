@@ -1,4 +1,4 @@
-package org.sleepapp.viewmodel
+package org.sleepapp.presentation.statistics
 
 import androidx.lifecycle.ViewModel
 

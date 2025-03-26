@@ -2,12 +2,11 @@ package org.sleepapp.presentation.statistics
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.koin.compose.viewmodel.koinViewModel
-import org.sleepapp.viewmodel.StatisticsViewModel
 import cafe.adriel.voyager.core.screen.Screen
 
 
