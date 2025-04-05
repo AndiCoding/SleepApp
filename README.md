@@ -21,3 +21,6 @@ Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-mu
 To effectively separate the domain and data layers in your project, you can follow the Clean Architecture principles. Here is a suggested structure:  
 Domain Layer: Contains the core business logic and rules. This includes interfaces, use cases, and entities.
 Data Layer: Contains the implementation details, such as repositories, data sources, and platform-specific code.
+
+Create l
+https://proandroiddev.com/dot-dash-design-c30928484f79

@@ -10,5 +10,4 @@ data class AlarmItem(
     val start: String,
     val end: String,
     val interval: String,
-    val isOptionRevealed: Boolean
 )

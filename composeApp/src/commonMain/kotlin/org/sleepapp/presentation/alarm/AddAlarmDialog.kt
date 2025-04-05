@@ -61,7 +61,6 @@ fun AddAlarmDialog(
                               start = txt,
                               end = txt,
                               interval = txt,
-                              isOptionRevealed = false
                             )
                           )
                           onDismiss()

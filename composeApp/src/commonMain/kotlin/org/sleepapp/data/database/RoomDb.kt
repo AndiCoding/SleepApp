@@ -11,7 +11,7 @@ import org.sleepapp.data.model.AlarmItem
     entities = [
         AlarmItem::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = true
 )
 

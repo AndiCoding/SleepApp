@@ -2,6 +2,7 @@ package org.sleepapp.presentation.alarm
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,7 @@ class AlarmViewModel(
     private val deleteAlarmUseCase: DeleteAlarmUseCase,
     private val getAllAlarmUseCase: GetAllAlarmUseCase
 ) : ViewModel() {
+    val anchorPoints = mutableListOf<Offset>()
 
 
 
