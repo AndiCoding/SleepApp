@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.profile
+package org.sleepapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 

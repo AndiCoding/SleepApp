@@ -24,10 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
+import org.sleepapp.viewmodel.NotesViewModel
 
 
 class NotesScreen : Screen {

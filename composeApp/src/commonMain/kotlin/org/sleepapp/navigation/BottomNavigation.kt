@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.navigation
+package org.sleepapp.navigation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
-
+import org.sleepapp.viewmodel.ProfileViewModel
 
 
 class ProfileScreen: Screen {
