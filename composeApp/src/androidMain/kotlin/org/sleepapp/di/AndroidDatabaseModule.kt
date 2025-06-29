@@ -1,6 +1,5 @@
 package org.sleepapp.di
 
-import androidx.room.RoomDatabase
 import cache.AndroidDatabaseDriverFactory
 import cache.Database
 import org.koin.android.ext.koin.androidContext

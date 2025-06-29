@@ -15,7 +15,7 @@ import org.sleepapp.data.repository.AlarmRepository
 
 
 class AlarmViewModel(
-private val alarmRepository: AlarmRepository
+//private val alarmRepository: AlarmRepository
 ) : ViewModel() {
     private val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     fun getCurrentTime(): String{
@@ -28,7 +28,7 @@ private val alarmRepository: AlarmRepository
 
        _currentAlarm.value = hour to minute
     }
-
+/*
     fun insertAlarm(alarmItem: AlarmItem) {
         viewModelScope.launch { alarmRepository.insertAlarm(alarmItem) }
     }
@@ -45,4 +45,6 @@ private val alarmRepository: AlarmRepository
         return alarmRepository.getAllAlarms()
     }
 
+
+ */
 }

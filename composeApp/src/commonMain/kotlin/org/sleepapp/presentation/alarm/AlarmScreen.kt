@@ -50,10 +50,12 @@ class AlarmScreen : Screen {
             }
 
 
-
+/*
             val alarmList = alarmViewModel
                 .getAllAlarm()
 
+
+ */
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -97,6 +99,7 @@ class AlarmScreen : Screen {
 
                 Box(){
                     Text("Recent Alarms", fontSize = 18.sp)
+                    /*
                     LazyColumn(Modifier.fillMaxWidth()) {
                         itemsIndexed(
                             items = alarmList.orEmpty(),
@@ -104,6 +107,8 @@ class AlarmScreen : Screen {
                             Text(alarm.id.toString())
                         }
                     }
+
+                     */
 
                 }
 

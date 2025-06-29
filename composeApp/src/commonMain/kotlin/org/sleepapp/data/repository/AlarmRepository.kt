@@ -3,8 +3,6 @@ package org.sleepapp.data.repository
 import cache.Alarm
 import cache.Database
 import cache.DatabaseDriverFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import org.sleepapp.data.model.AlarmItem
 
 class AlarmRepository(
@@ -12,7 +10,6 @@ class AlarmRepository(
 ) {
     private val database = Database(databaseDriverFactory)
 
-    private val dispatcher = Dispatchers.IO
 
     fun insertAlarm(alarmItem: AlarmItem) {
             database.addAlarm(

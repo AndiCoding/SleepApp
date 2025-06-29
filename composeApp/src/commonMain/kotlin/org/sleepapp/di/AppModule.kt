@@ -15,11 +15,6 @@ val appModule = module {
 
     factory { getPlatform(this) }
 
-
-    // Repository
-    singleOf(::AlarmRepository)
-
-
     // ViewModels
     viewModelOf(::AlarmViewModel)
     viewModelOf(::StatisticsViewModel)
