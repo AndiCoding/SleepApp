@@ -1,5 +1,6 @@
 package org.sleepapp.presentation.alarm
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -77,7 +81,7 @@ class AlarmScreen : Screen {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text("Home", modifier = Modifier, fontSize = MaterialTheme.typography.titleLarge.fontSize)
+                    Text("Home", modifier = Modifier, fontSize = 24.sp)
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -106,13 +110,18 @@ class AlarmScreen : Screen {
                     Text("Activate")
                 }
 
-                LazyColumn(Modifier.fillMaxWidth()) {
-                    itemsIndexed(
-                        items = alarmList.orEmpty(),
+                Box(){
+                    Text("Recent Alarms", fontSize = 18.sp)
+                    LazyColumn(Modifier.fillMaxWidth()) {
+                        itemsIndexed(
+                            items = alarmList.orEmpty(),
                         ) { index, alarm ->
-                        Text(alarm.id.toString())
+                            Text(alarm.id.toString())
+                        }
                     }
+
                 }
+
 
 
 

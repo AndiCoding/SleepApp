@@ -21,7 +21,6 @@ private val alarmRepository: AlarmRepository
         return "${now.hour}:${now.minute}"
     }
 
-
     private val _currentAlarm = MutableStateFlow(now.hour to now.minute)
     val currentAlarm: StateFlow<Pair<Int,Int>> get() = _currentAlarm
     fun setCurrentAlarm(hour: Int, minute: Int){
