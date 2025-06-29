@@ -2,6 +2,7 @@ package org.sleepapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cache.Alarm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +41,7 @@ private val alarmRepository: AlarmRepository
         viewModelScope.launch { alarmRepository.deleteAlarm(alarmItem) }
     }
 
-    fun getAllAlarm() : Flow<List<AlarmItem>?> {
+    fun getAllAlarm() : List<Alarm> {
         return alarmRepository.getAllAlarms()
     }
 

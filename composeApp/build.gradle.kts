@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.room)
     id("com.google.devtools.ksp")
-
+    alias(libs.plugins.sqldelight)
 
 }
 
@@ -39,7 +39,11 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+            implementation(libs.android.driver)
+        }
 
+        iosMain.dependencies {
+            implementation(libs.native.driver)
         }
 
 
@@ -119,3 +123,10 @@ room {
  schemaDirectory("$projectDir/schemas")
 }
 
+sqldelight {
+    databases {
+        create("AlarmDatabase") {
+            packageName.set("org.example.sleepapp")
+        }
+    }
+}

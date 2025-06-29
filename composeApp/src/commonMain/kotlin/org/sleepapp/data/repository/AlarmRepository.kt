@@ -1,36 +1,43 @@
 package org.sleepapp.data.repository
 
+import cache.Alarm
+import cache.Database
+import cache.DatabaseDriverFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.Flow
-import org.sleepapp.data.database.RoomDb
 import org.sleepapp.data.model.AlarmItem
 
 class AlarmRepository(
-    private val database: RoomDb
+    private val databaseDriverFactory: DatabaseDriverFactory
 ) {
+    private val database = Database(databaseDriverFactory)
+
     private val dispatcher = Dispatchers.IO
 
-    suspend fun insertAlarm(alarmItem: AlarmItem) {
-        with(dispatcher){
-            database.alarmDao().insert(alarmItem)
-        }
+    fun insertAlarm(alarmItem: AlarmItem) {
+            database.addAlarm(
+                alarmItem.startHour,
+                alarmItem.startMinute,
+                alarmItem.endHour,
+                alarmItem.endMinute
+            )
     }
 
-    suspend fun updateAlarm(alarmItem: AlarmItem) {
-        with(dispatcher){
-            database.alarmDao().update(alarmItem)
-        }
+    fun updateAlarm(alarmItem: AlarmItem) {
+        database.updateAlarm(alarmItem.id,
+            alarmItem.startHour,
+            alarmItem.startMinute,
+            alarmItem.endHour,
+            alarmItem.endMinute
+        )
     }
 
-    suspend fun deleteAlarm(alarmItem: AlarmItem) {
-        with(dispatcher){
-            database.alarmDao().delete(alarmItem)
-        }
+    fun deleteAlarm(alarmItem: AlarmItem) {
+        database.deleteAlarm(alarmItem.id)
     }
 
-    fun getAllAlarms() : Flow<List<AlarmItem>?> {
-        return database.alarmDao().getAll()
+    fun getAllAlarms() : List<Alarm> {
+        return database.getAllAlarms()
     }
 
 }

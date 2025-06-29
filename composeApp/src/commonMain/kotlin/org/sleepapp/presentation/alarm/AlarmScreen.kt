@@ -50,25 +50,10 @@ class AlarmScreen : Screen {
             }
 
 
-            val alarms = remember {
-                mutableStateListOf(
-                    (1..100).map{
-                        AlarmItem(
-                            id = it,
-                            start = "10:00",
-                            end = "11:00",
-                            interval = "1h",
-                            //isOptionRevealed = false
-                        )
-                    }
-                )
-            }
 
-            val alarmList by alarmViewModel
+            val alarmList = alarmViewModel
                 .getAllAlarm()
-                .collectAsStateWithLifecycle(
-                    initialValue = null
-                )
+
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
