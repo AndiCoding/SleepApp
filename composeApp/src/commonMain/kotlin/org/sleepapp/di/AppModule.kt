@@ -1,6 +1,8 @@
 package org.sleepapp.di
 
 
+import cache.Database
+import cache.DatabaseDriverFactory
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -20,5 +22,7 @@ val appModule = module {
     viewModelOf(::StatisticsViewModel)
     viewModelOf(::NotesViewModel)
     viewModelOf(::ProfileViewModel)
+
+    singleOf(::AlarmRepository)
 
 }

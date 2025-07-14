@@ -1,6 +1,10 @@
 package cache
 
+
 import org.example.sleepapp.AlarmDatabase
+import org.sleepapp.data.model.Alarm
+
+
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AlarmDatabase(databaseDriverFactory.createDriver())
@@ -42,6 +46,19 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     internal fun getAllAlarms(): List<Alarm> {
-        return dbQuery.getAllAlarms().executeAsList()
+        return emptyList<Alarm>()
+/*
+        return dbQuery.getAllAlarms().executeAsList().map { dbAlarm ->
+            Alarm(
+                id = dbAlarm.id,
+                startHour = dbAlarm.startHour,
+                startMinute = dbAlarm.startMinute,
+                endHour = dbAlarm.endHour,
+                endMinute = dbAlarm.endMinute,
+                interval = dbAlarm.interval
+            )
+        }
+
+ */
     }
 }

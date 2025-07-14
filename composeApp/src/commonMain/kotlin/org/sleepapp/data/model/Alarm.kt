@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class AlarmItem(
+data class Alarm(
     @SerialName("id")
     val id:Long = 0,
     @SerialName("start_hour")

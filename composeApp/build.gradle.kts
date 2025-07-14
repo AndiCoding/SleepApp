@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.room)
     id("com.google.devtools.ksp")
-    alias(libs.plugins.sqldelight)
+    alias(libs.plugins.sqlDelight)
 
 }
 
@@ -39,11 +39,11 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
-            implementation(libs.android.driver)
+            implementation(libs.sqldelight.android)
         }
 
         iosMain.dependencies {
-            implementation(libs.native.driver)
+            implementation(libs.sqldelight.native)
         }
 
 
@@ -68,6 +68,8 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
+
+            implementation(libs.sqldelight.coroutines)
 
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
         }
@@ -127,6 +129,7 @@ sqldelight {
     databases {
         create("AlarmDatabase") {
             packageName.set("org.example.sleepapp")
+            schemaOutputDirectory = file("src/commonMain/sqldelight/cache")
         }
     }
 }

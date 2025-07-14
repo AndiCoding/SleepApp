@@ -3,12 +3,9 @@ package org.sleepapp.viewmodel
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cache.Alarm
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import org.sleepapp.data.model.AlarmItem
 import org.sleepapp.data.repository.AlarmRepository
 
 import kotlin.math.PI
@@ -55,19 +52,19 @@ class AlarmViewModelClock(
         )
     }
 
-    val insertAlarm = fun(alarmItem: AlarmItem) {
+    val insertAlarm = fun(alarmItem: org.sleepapp.data.model.Alarm) {
         viewModelScope.launch { alarmRepository.insertAlarm(alarmItem) }
     }
 
-    val updateAlarm = fun(alarmItem: AlarmItem) {
+    val updateAlarm = fun(alarmItem: org.sleepapp.data.model.Alarm) {
         viewModelScope.launch { alarmRepository.updateAlarm(alarmItem) }
     }
 
-    val deleteAlarm = fun(alarmItem: AlarmItem) {
+    val deleteAlarm = fun(alarmItem: org.sleepapp.data.model.Alarm) {
         viewModelScope.launch { alarmRepository.deleteAlarm(alarmItem) }
     }
 
-    fun getAllAlarm() : List<Alarm>{
+    fun getAllAlarm() : List<org.sleepapp.data.model.Alarm>{
         return alarmRepository.getAllAlarms()
     }
 

@@ -1,9 +1,8 @@
 package org.sleepapp.data.repository
 
-import cache.Alarm
 import cache.Database
 import cache.DatabaseDriverFactory
-import org.sleepapp.data.model.AlarmItem
+import org.sleepapp.data.model.Alarm
 
 class AlarmRepository(
     private val databaseDriverFactory: DatabaseDriverFactory
@@ -11,7 +10,7 @@ class AlarmRepository(
     private val database = Database(databaseDriverFactory)
 
 
-    fun insertAlarm(alarmItem: AlarmItem) {
+    fun insertAlarm(alarmItem: Alarm) {
             database.addAlarm(
                 alarmItem.startHour,
                 alarmItem.startMinute,
@@ -20,7 +19,7 @@ class AlarmRepository(
             )
     }
 
-    fun updateAlarm(alarmItem: AlarmItem) {
+    fun updateAlarm(alarmItem: Alarm) {
         database.updateAlarm(alarmItem.id,
             alarmItem.startHour,
             alarmItem.startMinute,
@@ -29,7 +28,7 @@ class AlarmRepository(
         )
     }
 
-    fun deleteAlarm(alarmItem: AlarmItem) {
+    fun deleteAlarm(alarmItem: Alarm) {
         database.deleteAlarm(alarmItem.id)
     }
 
