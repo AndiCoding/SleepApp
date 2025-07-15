@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.room)
     id("com.google.devtools.ksp")
     alias(libs.plugins.sqlDelight)
 
@@ -60,7 +59,6 @@ kotlin {
             implementation(libs.koin.compose.viewmodel.nav)
             implementation(libs.koin.core)
 
-            implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
 
 
@@ -112,17 +110,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
     implementation(libs.voyager.screenmodel)
-
-    add("kspAndroid", libs.room.compiler)
-    add("kspIosX64", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
-    add("kspIosSimulatorArm64", libs.room.compiler)
-
-
-}
-
-room {
- schemaDirectory("$projectDir/schemas")
 }
 
 sqldelight {

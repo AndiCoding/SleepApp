@@ -6,7 +6,7 @@ import org.koin.core.component.inject
 class KoinHelper: KoinComponent {
     private val sdk: Database by inject<Database>()
 
-    fun getAllAlarms(): List<Alarm> {
+    fun getAllAlarms(): List<org.sleepapp.data.model.Alarm> {
         return sdk.getAllAlarms()
     }
 

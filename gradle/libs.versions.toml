@@ -20,7 +20,6 @@ logback = "1.5.16"
 
 ktor = "3.0.3"
 koin = "4.0.2"
-room = "2.7.0-rc02"
 ksp = "2.1.0-1.0.29"
 sqlite = "2.5.0-rc02"
 
@@ -66,9 +65,6 @@ koin-android = {module = "io.insert-koin:koin-android", version.ref = "koin"}
 koin-compose-viewmodel = {module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin"}
 koin-compose-viewmodel-nav = {module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin"}
 
-# Database
-room-runtime = {module = "androidx.room:room-runtime", version.ref = "room"}
-room-compiler = {module = "androidx.room:room-compiler", version.ref = "room"}
 sqlite-bundled = {module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite"}
 
 sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
@@ -95,5 +91,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
-room = { id = "androidx.room", version.ref = "room" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

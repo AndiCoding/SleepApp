@@ -1,11 +1,11 @@
 package org.sleepapp.di
 
 import cache.Database
+import cache.DatabaseDriverFactory
 import cache.IOSDatabaseDriverFactory
 import org.koin.dsl.module
 
 val iosDatabaseModule = module {
-    single<Database> { Database(
-        databaseDriverFactory = IOSDatabaseDriverFactory()
-    ) }
+    single<DatabaseDriverFactory>{ IOSDatabaseDriverFactory() }
+    single{Database(databaseDriverFactory = get<DatabaseDriverFactory>())}
 }
