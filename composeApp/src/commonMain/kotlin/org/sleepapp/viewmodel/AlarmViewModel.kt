@@ -10,10 +10,12 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.sleepapp.data.model.Alarm
 import org.sleepapp.data.repository.AlarmRepository
+import org.sleepapp.data.repository.AlarmScheduler
 
 
 class AlarmViewModel(
-private val alarmRepository: AlarmRepository
+private val alarmRepository: AlarmRepository,
+    private val alarmScheduler: AlarmScheduler
 ) : ViewModel() {
     private val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     fun getCurrentTime(): String{
@@ -35,7 +37,10 @@ private val alarmRepository: AlarmRepository
             interval = "NOT IMPLEMENTED"
         )
         viewModelScope.launch {
-            alarmRepository.insertAlarm(alarm) }
+            alarmRepository.insertAlarm(alarm)
+            alarmScheduler.scheduleAlarm(alarm)
+
+        }
     }
 
     fun updateAlarm(alarmItem: Alarm) {
