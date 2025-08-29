@@ -46,8 +46,6 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     internal fun getAllAlarms(): List<Alarm> {
-        return emptyList<Alarm>()
-/*
         return dbQuery.getAllAlarms().executeAsList().map { dbAlarm ->
             Alarm(
                 id = dbAlarm.id,
@@ -55,10 +53,11 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
                 startMinute = dbAlarm.startMinute,
                 endHour = dbAlarm.endHour,
                 endMinute = dbAlarm.endMinute,
-                interval = dbAlarm.interval
+                interval = "NOT IMPLEMENTED"
+                //interval = dbAlarm.interval
             )
         }
-
- */
+        /*
+         */
     }
 }

@@ -5,7 +5,7 @@ import cache.DatabaseDriverFactory
 import org.sleepapp.data.model.Alarm
 
 class AlarmRepository(
-    private val databaseDriverFactory: DatabaseDriverFactory
+    databaseDriverFactory: DatabaseDriverFactory
 ) {
     private val database = Database(databaseDriverFactory)
 

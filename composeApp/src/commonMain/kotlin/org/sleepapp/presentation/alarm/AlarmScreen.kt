@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,20 +37,9 @@ class AlarmScreen : Screen {
             val navigator: Navigator = LocalNavigator.currentOrThrow
             val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
 
-            var selectedHour by remember {
-                mutableIntStateOf(0)
-            }
-            var selectedMinute by remember {
-                mutableIntStateOf(0)
-            }
-
-
-/*
             val alarmList = alarmViewModel
                 .getAllAlarm()
 
-
- */
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,16 +84,20 @@ class AlarmScreen : Screen {
 
                 Box(){
                     Text("Recent Alarms", fontSize = 18.sp)
-                    /*
                     LazyColumn(Modifier.fillMaxWidth()) {
                         itemsIndexed(
                             items = alarmList.orEmpty(),
                         ) { index, alarm ->
-                            Text(alarm.id.toString())
+                            Row {
+                                Text(alarm.id.toString() + "  ")
+                                Text(alarm.endHour.toString())
+                                Text(alarm.endMinute.toString())
+                            }
+
                         }
                     }
 
-                     */
+
 
                 }
 
