@@ -11,13 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 actual fun InputTimeSelector(
-    onConfirm: (Int, Int) -> Unit,
+    onConfirm: (time: LocalTime) -> Unit,
     onDismiss: () -> Unit
 ) {
     val currentTime = kotlinx.datetime.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
@@ -35,7 +36,7 @@ actual fun InputTimeSelector(
             state = timePickerState,
             modifier = Modifier.onFocusChanged { focusState ->
                 if (!focusState.isFocused && hasFocus) {
-                    onConfirm(timePickerState.hour, timePickerState.minute)
+                    onConfirm(LocalTime(timePickerState.hour,timePickerState.minute))
                 }
                 hasFocus = focusState.isFocused
             }

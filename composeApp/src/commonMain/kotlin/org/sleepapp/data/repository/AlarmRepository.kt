@@ -2,6 +2,9 @@ package org.sleepapp.data.repository
 
 import cache.Database
 import cache.DatabaseDriverFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.sleepapp.data.model.Alarm
 
 class AlarmRepository(
@@ -12,20 +15,17 @@ class AlarmRepository(
 
     fun insertAlarm(alarmItem: Alarm) {
             database.addAlarm(
-                alarmItem.startHour,
-                alarmItem.startMinute,
-                alarmItem.endHour,
-                alarmItem.endMinute
+                alarmItem.startAlarm,
+                alarmItem.endAlarm,
+                alarmItem.interval
             )
-
     }
 
     fun updateAlarm(alarmItem: Alarm) {
         database.updateAlarm(alarmItem.id,
-            alarmItem.startHour,
-            alarmItem.startMinute,
-            alarmItem.endHour,
-            alarmItem.endMinute
+            alarmItem.startAlarm,
+            alarmItem.endAlarm,
+            alarmItem.interval
         )
     }
 
@@ -33,8 +33,8 @@ class AlarmRepository(
         database.deleteAlarm(alarmItem.id)
     }
 
-    fun getAllAlarms() : List<Alarm> {
-        return database.getAllAlarms()
-    }
 
+      fun getAllAlarmsFlow(): StateFlow<List<Alarm>> {
+        return database.alarmsFlow
+    }
 }

@@ -1,11 +1,13 @@
 package org.sleepapp.presentation.alarm.components
 
 import androidx.compose.runtime.Composable
+import kotlinx.datetime.LocalTime
 
 @Composable
+
 actual fun InputTimeSelector(
-    onConfirm: (Int, Int) -> Unit,
+    onConfirm: (time: LocalTime) -> Unit,
     onDismiss: () -> Unit
 ) {
-    onConfirm(10,10)
+    onConfirm(LocalTime(23,0))
 }

@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import kotlin.plus
 
 
 plugins {
@@ -29,6 +30,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            freeCompilerArgs += listOf("-Xbinary=bundleId=org.sleepapp.composeapp")
+
         }
     }
     
@@ -58,17 +61,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.koin.compose.viewmodel.nav)
             implementation(libs.koin.core)
-
             implementation(libs.sqlite.bundled)
-
-
             implementation(libs.voyager.navigator)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
-
             implementation(libs.sqldelight.coroutines)
-
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
         }
 

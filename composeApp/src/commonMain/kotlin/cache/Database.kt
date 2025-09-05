@@ -1,63 +1,79 @@
 package cache
 
-
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.LocalTime
 import org.example.sleepapp.AlarmDatabase
 import org.sleepapp.data.model.Alarm
-
-
+import org.sleepapp.data.repository.localTimeToString
+import org.sleepapp.data.repository.stringToLocalTime
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AlarmDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.alarmDatabaseQueries
 
+
+
+
+    private val _alarmsFlow = MutableStateFlow<List<Alarm>>(emptyList())
+    internal val alarmsFlow: StateFlow<List<Alarm>> get() = _alarmsFlow
+
+    init {
+        refreshAlarms()
+    }
+
+    private fun refreshAlarms() {
+        _alarmsFlow.value = getAllAlarms()
+    }
+
     internal fun addAlarm(
-        startHour: Long,
-        startMinute: Long,
-        endHour: Long,
-        endMinute: Long,
+        startAlarm: LocalTime,
+        endAlarm: LocalTime,
+        interval: Long
     ) {
         dbQuery.insertAlarm(
-            startHour = startHour,
-            startMinute = startMinute,
-            endHour = endHour,
-            endMinute = endMinute,
+            start_time = localTimeToString(startAlarm),
+            end_time = localTimeToString(endAlarm),
+            interval = interval
         )
+
+        refreshAlarms()
     }
 
     internal fun updateAlarm(
         id: Long,
-        startHour: Long,
-        startMinute: Long,
-        endHour: Long,
-        endMinute: Long,
+        startAlarm: LocalTime,
+        endAlarm: LocalTime,
+        interval: Long
     )  {
         dbQuery.updateAlarm(
-            startHour = startHour,
-            startMinute = startMinute,
-            endHour = endHour,
-            endMinute = endMinute,
-            id = id
+            id = id,
+            start_time = localTimeToString(startAlarm),
+            end_time = localTimeToString(endAlarm),
+            interval = interval
+
         )
+        refreshAlarms()
     }
 
 
     internal fun deleteAlarm(id: Long) {
         dbQuery.deleteAlarm(id)
+        refreshAlarms()
     }
+
 
     internal fun getAllAlarms(): List<Alarm> {
         return dbQuery.getAllAlarms().executeAsList().map { dbAlarm ->
             Alarm(
                 id = dbAlarm.id,
-                startHour = dbAlarm.startHour,
-                startMinute = dbAlarm.startMinute,
-                endHour = dbAlarm.endHour,
-                endMinute = dbAlarm.endMinute,
-                interval = "NOT IMPLEMENTED"
-                //interval = dbAlarm.interval
+                startAlarm = stringToLocalTime(dbAlarm.start_time),
+                endAlarm = stringToLocalTime(dbAlarm.end_time),
+                interval = dbAlarm.interval
             )
         }
-        /*
-         */
+
     }
 }

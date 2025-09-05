@@ -1,4 +1,6 @@
 package org.sleepapp.presentation.alarm
+
+import StoredAlarm
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,23 +10,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import org.sleepapp.presentation.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
@@ -34,11 +37,11 @@ class AlarmScreen : Screen {
     override fun Content() {
         MaterialTheme {
             val alarmViewModel = koinViewModel<AlarmViewModel>()
-            val navigator: Navigator = LocalNavigator.currentOrThrow
             val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
+            val navigator = LocalNavigator.current
 
-            val alarmList = alarmViewModel
-                .getAllAlarm()
+
+            val alarmList by alarmViewModel.alarms.collectAsState()
 
 
             Column(modifier = Modifier.fillMaxSize(),
@@ -64,42 +67,44 @@ class AlarmScreen : Screen {
                         }
                         Column {
                             Text("Wakeup", modifier = Modifier)
-                            Text("${currentAlarm.first}:${currentAlarm.second}", modifier = Modifier)
+                            Text(currentAlarm.toString(), modifier = Modifier)
                         }
                     }
 
                         InputTimeSelector(
                             onConfirm = {
-                                selectedHour, selectedMinute ->
-                                alarmViewModel.setCurrentAlarm(selectedHour, selectedMinute)
+                                currentAlarm ->
+                                alarmViewModel.setCurrentAlarm(currentAlarm)
                             },
                             onDismiss = { /*TODO*/ }
                         )
                 }
                 Button(onClick = {
                     alarmViewModel.insertAlarm()
+                    //val newestAlarm = alarmList[alarmList.size - 1]
+                    //navigator?.push(ActiveAlarmScreen(newestAlarm))
                 }){
                     Text("Activate")
                 }
+                Text("Recent Alarms", fontSize = 18.sp)
 
-                Box(){
-                    Text("Recent Alarms", fontSize = 18.sp)
-                    LazyColumn(Modifier.fillMaxWidth()) {
+                LazyColumn(
+                        Modifier
+                        .fillMaxWidth(0.8f)
+                        .fillMaxHeight()) {
                         itemsIndexed(
-                            items = alarmList.orEmpty(),
+                            items = alarmList
                         ) { index, alarm ->
-                            Row {
-                                Text(alarm.id.toString() + "  ")
-                                Text(alarm.endHour.toString())
-                                Text(alarm.endMinute.toString())
-                            }
-
+                            StoredAlarm(
+                                alarm = alarm,
+                                { navigator?.push(ActiveAlarmScreen(alarm)) },
+                                { alarmViewModel.deleteAlarm(alarm) })
                         }
                     }
 
 
 
-                }
+
 
 
 

@@ -1,20 +1,21 @@
+-- AlarmDatabase.sq
+-- @DATABASE AlarmDatabase
+-- @VERSION 2
+
 CREATE TABLE Alarm (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    startHour INTEGER NOT NULL,
-    startMinute INTEGER NOT NULL,
-    endHour INTEGER NOT NULL,
-    endMinute INTEGER NOT NULL,
-    interval TEXT
+    start_time TEXT NOT NULL,
+    end_time TEXT NOT NULL,
+    interval INTEGER NOT NULL
 );
 
 insertAlarm:
-INSERT INTO Alarm(startHour, startMinute, endHour, endMinute)
-VALUES(?,?,?,?);
-
+INSERT INTO Alarm(start_time, end_time, interval)
+VALUES (?, ?, ?);
 
 updateAlarm:
 UPDATE Alarm
-SET startHour = ?, startMinute = ?, endHour = ?, endMinute = ?
+SET start_time = ?, end_time = ?, interval = ?
 WHERE id = ?;
 
 deleteAlarm:
