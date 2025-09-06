@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.unit.dp
 import org.sleepapp.data.model.Alarm
 
 @Composable
@@ -35,10 +34,12 @@ fun StoredAlarm(
     onDelete: (Alarm) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
+
     val animatedHeight by animateFloatAsState(
         targetValue = if (isExpanded) 0.3f else 0.15f,
         label = "height animation"
     )
+
     Card(
         modifier = Modifier
             .fillMaxWidth()

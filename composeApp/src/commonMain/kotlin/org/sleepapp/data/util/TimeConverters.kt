@@ -1,4 +1,4 @@
-package org.sleepapp.data.repository
+package org.sleepapp.data.util
 
 import kotlinx.datetime.LocalTime
 

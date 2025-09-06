@@ -34,12 +34,7 @@ private val alarmRepository: AlarmRepository,
     }
 
     private val _alarms: StateFlow<List<Alarm>> = alarmRepository
-        .getAllAlarmsFlow()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+        .alarmsFlow
 
     val alarms: StateFlow<List<Alarm>> get() = _alarms
 

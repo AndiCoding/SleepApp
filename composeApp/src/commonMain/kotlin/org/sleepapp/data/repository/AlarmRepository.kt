@@ -1,40 +1,32 @@
 package org.sleepapp.data.repository
 
-import cache.Database
-import cache.DatabaseDriverFactory
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import org.sleepapp.data.dao.AlarmDao
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.SharingStarted
 import org.sleepapp.data.model.Alarm
 
-class AlarmRepository(
-    databaseDriverFactory: DatabaseDriverFactory
-) {
-    private val database = Database(databaseDriverFactory)
+class AlarmRepository(private val alarmDao: AlarmDao) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
+    val alarmsFlow: StateFlow<List<Alarm>> = alarmDao.getAlarmsFlow().stateIn(
+        scope = scope,
+        started = SharingStarted.Lazily,
+        initialValue = emptyList()
+    )
 
-    fun insertAlarm(alarmItem: Alarm) {
-            database.addAlarm(
-                alarmItem.startAlarm,
-                alarmItem.endAlarm,
-                alarmItem.interval
-            )
+    suspend fun insertAlarm(alarm: Alarm) {
+        alarmDao.insert(alarm)
     }
 
-    fun updateAlarm(alarmItem: Alarm) {
-        database.updateAlarm(alarmItem.id,
-            alarmItem.startAlarm,
-            alarmItem.endAlarm,
-            alarmItem.interval
-        )
+    suspend fun updateAlarm(alarm: Alarm) {
+        alarmDao.update(alarm)
     }
 
-    fun deleteAlarm(alarmItem: Alarm) {
-        database.deleteAlarm(alarmItem.id)
-    }
-
-
-      fun getAllAlarmsFlow(): StateFlow<List<Alarm>> {
-        return database.alarmsFlow
+    suspend fun deleteAlarm(alarm: Alarm) {
+        alarmDao.delete(alarm)
     }
 }

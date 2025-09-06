@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.LocalTime
 import org.example.sleepapp.AlarmDatabase
 import org.sleepapp.data.model.Alarm
-import org.sleepapp.data.repository.localTimeToString
-import org.sleepapp.data.repository.stringToLocalTime
+import org.sleepapp.data.util.localTimeToString
+import org.sleepapp.data.util.stringToLocalTime
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AlarmDatabase(databaseDriverFactory.createDriver())
