@@ -7,7 +7,11 @@ import org.example.sleepapp.AlarmDatabase
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.sleepapp.data.dao.NotesDao
 import org.sleepapp.data.repository.AlarmRepository
+import org.sleepapp.data.repository.NoteRepository
+import org.sleepapp.data.state.AlarmStateHolder
+import org.sleepapp.data.state.NoteStateHolder
 import org.sleepapp.getPlatform
 import org.sleepapp.viewmodel.AlarmViewModel
 import org.sleepapp.viewmodel.NotesViewModel
@@ -27,7 +31,13 @@ val appModule = module {
 
     // DAOs and Repository
     singleOf(::AlarmDao)
+    singleOf(::NotesDao)
     singleOf(::AlarmRepository)
+    singleOf(::NoteRepository)
+
+    // StateHolders
+    single { AlarmStateHolder(get()) }
+    single { NoteStateHolder(get()) }
 
     // ViewModels
     viewModelOf(::AlarmViewModel)

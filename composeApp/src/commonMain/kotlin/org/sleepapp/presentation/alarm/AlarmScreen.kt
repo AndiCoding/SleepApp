@@ -13,11 +13,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -32,12 +34,19 @@ class AlarmScreen : Screen {
     override fun Content() {
         MaterialTheme {
             val alarmViewModel = koinViewModel<AlarmViewModel>()
-            val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
+            val currentAlarm by alarmViewModel.currentAlarmEndtime.collectAsState()
             val navigator = LocalNavigator.current
 
 
             val alarmList by alarmViewModel.alarms.collectAsState()
 
+            LaunchedEffect(Unit) {
+                alarmViewModel.createdAlarm.collect { alarm ->
+                    alarm?.let {
+                        navigator?.push(ActiveAlarmScreen(it))
+                    }
+                }
+            }
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +67,7 @@ class AlarmScreen : Screen {
                     ) {
                         Column {
                             Text("Bedtime", modifier = Modifier)
-                            Text(localDateTimetoHourAndMinute(alarmViewModel.getNow()))
+                            Text(localDateTimetoHourAndMinute(currentAlarm))
                         }
                         Column {
                             Text("Wakeup", modifier = Modifier)
@@ -69,17 +78,13 @@ class AlarmScreen : Screen {
                         InputTimeSelector(
                             onConfirm = {
                                 currentAlarm ->
-                                alarmViewModel.setCurrentAlarm(currentAlarm)
+                                alarmViewModel.setCurrentAlarmEndtime(currentAlarm)
                             },
                             onDismiss = { /*TODO*/ }
                         )
                 }
                 Button(onClick = {
-                    val insertedId = alarmViewModel.insertAlarm()
-
-                    alarmViewModel.getAlarmById(insertedId)?.let { alarm ->
-                        navigator?.push(ActiveAlarmScreen(alarm))
-                    }
+                    alarmViewModel.setAlarmAndNavigate()
                 }){
                     Text("Activate")
                 }

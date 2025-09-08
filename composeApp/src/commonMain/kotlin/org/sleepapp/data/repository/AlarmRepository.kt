@@ -6,17 +6,20 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import org.sleepapp.data.model.Alarm
 
 class AlarmRepository(private val alarmDao: AlarmDao) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    val alarmsFlow: StateFlow<List<Alarm>> = alarmDao.getAlarmsFlow().stateIn(
-        scope = scope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
+    val alarmsFlow: StateFlow<List<Alarm>> = alarmDao
+        .getAlarmsFlow()
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.Lazily,
+            initialValue = emptyList()
+        )
 
     suspend fun insertAlarm(alarm: Alarm): Long {
         return alarmDao.insert(alarm)
@@ -30,7 +33,7 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
         alarmDao.delete(alarm)
     }
 
-    suspend fun getAlarmById(id: Long): Alarm? {
+    fun getAlarmById(id: Long): Flow<Alarm?> {
         return alarmDao.getAlarmById(id)
     }
 }

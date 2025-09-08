@@ -1,8 +1,11 @@
 package org.sleepapp.data.util
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun localDateTimeToString(time: LocalDateTime): String = time.toString()
 
@@ -19,7 +22,9 @@ fun stringToLocalDateTime(value: String): LocalDateTime {
         }
     }
 }
-
+fun getNow(): LocalDateTime {
+    return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+}
 fun localDateTimetoHourAndMinute(time: LocalDateTime): String {
     return "${time.hour.toString().padStart(2, '0')}:${time.minute.toString().padStart(2, '0')}"
 }

@@ -1,6 +1,6 @@
 package org.sleepapp.data.model
 
-import kotlinx.datetime.LocalTime
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,6 +13,6 @@ data class Note(
     @SerialName("content")
     val content: String,
     @SerialName("end_time")
-    val createdAt: LocalTime,
+    val createdAt: LocalDateTime,
 
-)
+    )
