@@ -2,7 +2,6 @@ package org.sleepapp.presentation.alarm
 
 import StoredAlarm
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,12 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults.buttonColors
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +21,8 @@ import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import org.sleepapp.data.model.Alarm
-import org.sleepapp.presentation.ActiveAlarmScreen
+import org.sleepapp.data.util.localDateTimetoHourAndMinute
+import org.sleepapp.presentation.activealarm.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
@@ -64,11 +58,11 @@ class AlarmScreen : Screen {
                     ) {
                         Column {
                             Text("Bedtime", modifier = Modifier)
-                            Text(alarmViewModel.getCurrentTime(), modifier = Modifier)
+                            Text(localDateTimetoHourAndMinute(alarmViewModel.getNow()))
                         }
                         Column {
                             Text("Wakeup", modifier = Modifier)
-                            Text(currentAlarm.toString(), modifier = Modifier)
+                            Text(localDateTimetoHourAndMinute(currentAlarm))
                         }
                     }
 
@@ -81,9 +75,11 @@ class AlarmScreen : Screen {
                         )
                 }
                 Button(onClick = {
-                    alarmViewModel.insertAlarm()
-                    //val newestAlarm = alarmList[alarmList.size - 1]
-                    //navigator?.push(ActiveAlarmScreen(newestAlarm))
+                    val insertedId = alarmViewModel.insertAlarm()
+
+                    alarmViewModel.getAlarmById(insertedId)?.let { alarm ->
+                        navigator?.push(ActiveAlarmScreen(alarm))
+                    }
                 }){
                     Text("Activate")
                 }
@@ -98,17 +94,16 @@ class AlarmScreen : Screen {
                         ) { index, alarm ->
                             StoredAlarm(
                                 alarm = alarm,
-                                { navigator?.push(ActiveAlarmScreen(alarm)) },
+                                {
+                                    alarmViewModel.createAlarmWithSameWakeupTime(alarm.endAlarm)?.let { alarmExists ->
+                                        navigator?.push(ActiveAlarmScreen(
+                                            alarmExists)
+                                        )
+                                    }
+                                },
                                 { alarmViewModel.deleteAlarm(alarm) })
                         }
                     }
-
-
-
-
-
-
-
 
             }
         }

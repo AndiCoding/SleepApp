@@ -1,14 +1,12 @@
 package cache
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.datetime.LocalTime
+import kotlinx.datetime.LocalDateTime
 import org.example.sleepapp.AlarmDatabase
 import org.sleepapp.data.model.Alarm
-import org.sleepapp.data.util.localTimeToString
-import org.sleepapp.data.util.stringToLocalTime
+import org.sleepapp.data.util.localDateTimeToString
+import org.sleepapp.data.util.stringToLocalDateTime
 
 internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = AlarmDatabase(databaseDriverFactory.createDriver())
@@ -29,13 +27,13 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
     }
 
     internal fun addAlarm(
-        startAlarm: LocalTime,
-        endAlarm: LocalTime,
+        startAlarm: LocalDateTime,
+        endAlarm: LocalDateTime,
         interval: Long
     ) {
         dbQuery.insertAlarm(
-            start_time = localTimeToString(startAlarm),
-            end_time = localTimeToString(endAlarm),
+            start_time = localDateTimeToString(startAlarm),
+            end_time = localDateTimeToString(endAlarm),
             interval = interval
         )
 
@@ -44,14 +42,14 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
 
     internal fun updateAlarm(
         id: Long,
-        startAlarm: LocalTime,
-        endAlarm: LocalTime,
+        startAlarm: LocalDateTime,
+        endAlarm: LocalDateTime,
         interval: Long
     )  {
         dbQuery.updateAlarm(
             id = id,
-            start_time = localTimeToString(startAlarm),
-            end_time = localTimeToString(endAlarm),
+            start_time = localDateTimeToString(startAlarm),
+            end_time = localDateTimeToString(endAlarm),
             interval = interval
 
         )
@@ -69,8 +67,8 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
         return dbQuery.getAllAlarms().executeAsList().map { dbAlarm ->
             Alarm(
                 id = dbAlarm.id,
-                startAlarm = stringToLocalTime(dbAlarm.start_time),
-                endAlarm = stringToLocalTime(dbAlarm.end_time),
+                startAlarm = stringToLocalDateTime(dbAlarm.start_time),
+                endAlarm = stringToLocalDateTime(dbAlarm.end_time),
                 interval = dbAlarm.interval
             )
         }

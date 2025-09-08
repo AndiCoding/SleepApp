@@ -18,8 +18,8 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
         initialValue = emptyList()
     )
 
-    suspend fun insertAlarm(alarm: Alarm) {
-        alarmDao.insert(alarm)
+    suspend fun insertAlarm(alarm: Alarm): Long {
+        return alarmDao.insert(alarm)
     }
 
     suspend fun updateAlarm(alarm: Alarm) {
@@ -28,5 +28,9 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
 
     suspend fun deleteAlarm(alarm: Alarm) {
         alarmDao.delete(alarm)
+    }
+
+    suspend fun getAlarmById(id: Long): Alarm? {
+        return alarmDao.getAlarmById(id)
     }
 }

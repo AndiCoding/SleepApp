@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import org.sleepapp.data.model.Alarm
+import org.sleepapp.data.util.localDateTimetoHourAndMinute
 
 @Composable
 fun StoredAlarm(
@@ -55,7 +56,14 @@ fun StoredAlarm(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(alarm.id.toString())
-                Text(alarm.endAlarm.toString())
+                Column {
+                    Text("Bedtime")
+                    Text(localDateTimetoHourAndMinute(alarm.startAlarm))
+                }
+                Column {
+                    Text("Wakeup")
+                    Text(localDateTimetoHourAndMinute(alarm.endAlarm))
+                }
             }
 
             // Expandable content

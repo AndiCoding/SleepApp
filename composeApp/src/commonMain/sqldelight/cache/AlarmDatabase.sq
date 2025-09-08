@@ -28,7 +28,11 @@ WHERE id = ?;
 getAllAlarms:
 SELECT * FROM Alarm;
 
+getAlarmById:
+SELECT * FROM Alarm WHERE id = ?;
 
+lastInsertedRowId:
+SELECT last_insert_rowid();
 
 
 -- NOTE SCHEMA
@@ -37,11 +41,11 @@ CREATE TABLE Note (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
-    end_time TEXT NOT NULL
+    time TEXT NOT NULL
 );
 
 insertNote:
-INSERT INTO Note(title, content, end_time)
+INSERT INTO Note(title, content, time)
 VALUES (?, ?, ?);
 
 deleteNote:
@@ -55,3 +59,8 @@ WHERE id = ?;
 
 getAllNotes:
 SELECT * FROM Note;
+
+getNotesByDate:
+SELECT *
+FROM Note
+WHERE strftime('%Y-%m-%d', time) = strftime('%Y-%m-%d', ?);
