@@ -9,6 +9,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import org.sleepapp.data.model.Alarm
+import org.sleepapp.data.util.createRandomDateTime
 
 class AlarmRepository(private val alarmDao: AlarmDao) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -22,6 +23,8 @@ class AlarmRepository(private val alarmDao: AlarmDao) {
         )
 
     suspend fun insertAlarm(alarm: Alarm): Long {
+
+
         return alarmDao.insert(alarm)
     }
 

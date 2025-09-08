@@ -3,45 +3,47 @@ package org.sleepapp.viewmodel
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
 import org.sleepapp.data.model.Alarm
 import org.sleepapp.data.repository.AlarmRepository
 import org.sleepapp.data.repository.AlarmScheduler
-import org.sleepapp.data.state.AlarmStateHolder
+import org.sleepapp.data.util.createRandomDateTime
 import org.sleepapp.data.util.getNow
-import kotlin.text.compareTo
 
 
 class AlarmViewModel(
 private val alarmRepository: AlarmRepository,
     private val alarmScheduler: AlarmScheduler,
-    private val alarmStateHolder: AlarmStateHolder
 ) : ViewModel() {
 
-    val createdAlarm = alarmStateHolder.createdAlarm
-    val alarms = alarmStateHolder.alarms
+
+    private val _alarms = alarmRepository.alarmsFlow
+    val alarms get() = _alarms
+
+    private val _createdAlarm = MutableStateFlow(createEmptyAlarm())
+
+    fun createEmptyAlarm(): Alarm = Alarm(
+            startAlarm = getNow(),
+            endAlarm = getNow(),
+        )
+
+    val createdAlarm: StateFlow<Alarm> = _createdAlarm
+
+
+    fun clearCreatedAlarm() {
+        _createdAlarm.value = createEmptyAlarm()
+    }
 
     private val _currentAlarmEndtime = MutableStateFlow(getNow())
     val currentAlarmEndtime: StateFlow<LocalDateTime> get() = _currentAlarmEndtime
 
-    override fun onCleared() {
-        super.onCleared()
-        alarmStateHolder.clear()
-    }
 
-    fun getCurrentAlarm(): Alarm? {
-        return createdAlarm.value
-    }
     fun setCurrentAlarmEndtime(time: LocalDateTime){
         _currentAlarmEndtime.value = time
     }
@@ -55,47 +57,43 @@ private val alarmRepository: AlarmRepository,
     fun deleteAlarm(alarmItem: Alarm) {
         viewModelScope.launch {
             alarmRepository.deleteAlarm(alarmItem)
+            clearCreatedAlarm()
         }
     }
 
 
-    fun getAlarmById(id: Long): Flow<Alarm?> {
-        return alarmRepository.getAlarmById(id)
-    }
-
     fun setAlarmAndNavigate(): Long {
         val id = mutableLongStateOf(0)
         val alarm = Alarm(
-            startAlarm = getNow(),
+            //TODO
+            startAlarm = createRandomDateTime(),
+            //startAlarm = getNow(),
             endAlarm = _currentAlarmEndtime.value
         )
 
         viewModelScope.launch {
             id.value = alarmRepository.insertAlarm(alarm)
             alarmScheduler.scheduleAlarm(alarm)
-            alarmStateHolder.setCreatedAlarm(id.value)
+            _createdAlarm.value = alarm.copy(id = id.value)
         }
 
         return id.value
 
     }
 
-    fun clearCreatedAlarm() {
-        viewModelScope.launch {
-            alarmStateHolder.clearCreatedAlarm()
-        }
-    }
-
     fun insertAlarm(): Long {
         val id = mutableLongStateOf(0)
+
+
         val alarm = Alarm(
+
             startAlarm = getNow(),
             endAlarm = _currentAlarmEndtime.value
         )
         viewModelScope.launch {
             id.value = alarmRepository.insertAlarm(alarm)
             alarmScheduler.scheduleAlarm(alarm)
-            alarmStateHolder.setCreatedAlarm(id.value)
+            _createdAlarm.value = alarm.copy(id = id.value)
         }
         return id.value
     }

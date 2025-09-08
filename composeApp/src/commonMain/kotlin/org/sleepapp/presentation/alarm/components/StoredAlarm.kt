@@ -50,12 +50,15 @@ fun StoredAlarm(
     ) {
         Column {
             // Always visible content
+            Text("Date: ${alarm.startAlarm}")
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(alarm.id.toString())
+
                 Column {
                     Text("Bedtime")
                     Text(localDateTimetoHourAndMinute(alarm.startAlarm))
@@ -95,6 +98,7 @@ fun StoredAlarm(
                             contentDescription = "Delete alarm"
                         )
                     }
+
                 }
             }
         }

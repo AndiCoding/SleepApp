@@ -83,20 +83,17 @@ class NotesDao(private val queries: AlarmDatabaseQueries) {
             }.flowOn(Dispatchers.IO)
     }
 
-    fun getNotesByDate(date: LocalDateTime): Flow<List<Note>> {
+    suspend fun getNotesByDate(date: LocalDateTime): List<Note> {
         val dateString = date.date.toString()
         return queries.getNotesByDate(dateString)
-            .asFlow()
-            .mapToList(Dispatchers.IO)
-            .map { dbNotes ->
-                dbNotes.map { note ->
-                    Note(
-                        id = note.id,
-                        title = note.title,
-                        content = note.content,
-                        createdAt = stringToLocalDateTime(note.createdAt)
-                    )
-                }
-            }.flowOn(Dispatchers.IO)
+            .executeAsList()
+            .map{ note ->
+                Note(
+                    id = note.id,
+                    title = note.title,
+                    content = note.content,
+                    createdAt = stringToLocalDateTime(note.createdAt)
+                )
+            }
     }
 }

@@ -19,10 +19,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import org.sleepapp.data.util.createRandomDateTime
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.activealarm.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
@@ -36,17 +36,8 @@ class AlarmScreen : Screen {
             val alarmViewModel = koinViewModel<AlarmViewModel>()
             val currentAlarm by alarmViewModel.currentAlarmEndtime.collectAsState()
             val navigator = LocalNavigator.current
-
-
             val alarmList by alarmViewModel.alarms.collectAsState()
 
-            LaunchedEffect(Unit) {
-                alarmViewModel.createdAlarm.collect { alarm ->
-                    alarm?.let {
-                        navigator?.push(ActiveAlarmScreen(it))
-                    }
-                }
-            }
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,12 +70,15 @@ class AlarmScreen : Screen {
                             onConfirm = {
                                 currentAlarm ->
                                 alarmViewModel.setCurrentAlarmEndtime(currentAlarm)
+
                             },
                             onDismiss = { /*TODO*/ }
                         )
                 }
                 Button(onClick = {
                     alarmViewModel.setAlarmAndNavigate()
+                    navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
+
                 }){
                     Text("Activate")
                 }
