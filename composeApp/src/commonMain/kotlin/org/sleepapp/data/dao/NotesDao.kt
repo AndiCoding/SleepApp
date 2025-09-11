@@ -33,7 +33,11 @@ class NotesDao(private val queries: AlarmDatabaseQueries) {
 
 
     fun insert(note: Note): Long {
-        val createdAtString = localDateTimeToString(getNow())
+        val createdAtString = try {
+            localDateTimeToString(note.createdAt)
+        } catch (e: Exception) {
+            localDateTimeToString(getNow())
+        }
         queries.insertNote(
             title = note.title,
             content = note.content,
@@ -83,7 +87,25 @@ class NotesDao(private val queries: AlarmDatabaseQueries) {
             }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun getNotesByDate(date: LocalDateTime): List<Note> {
+    fun getNotesByDate(date: LocalDateTime): Flow<List<Note>> = queries
+        .getNotesByDate(date.date.toString())
+        .asFlow()
+        .mapToList(Dispatchers.IO)
+        .map { dateNotes ->
+            dateNotes.map { dateNote ->
+                Note(
+                    id = dateNote.id,
+                    title = dateNote.title,
+                    content = dateNote.content,
+                    createdAt = stringToLocalDateTime(dateNote.createdAt)
+                )
+            }
+        }.flowOn(Dispatchers.IO)
+
+
+
+/*
+    fun getNotesByDate(date: LocalDateTime): List<Note> {
         val dateString = date.date.toString()
         return queries.getNotesByDate(dateString)
             .executeAsList()
@@ -96,4 +118,6 @@ class NotesDao(private val queries: AlarmDatabaseQueries) {
                 )
             }
     }
+
+ */
 }

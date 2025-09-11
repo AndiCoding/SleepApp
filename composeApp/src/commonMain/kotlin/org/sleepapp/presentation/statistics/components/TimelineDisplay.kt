@@ -1,6 +1,7 @@
 package org.sleepapp.presentation.statistics.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,18 +15,21 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import org.sleepapp.data.model.Alarm
 
 @Composable
-fun TimelineDisplay(){
+fun TimelineDisplay(onDateSelected: (Int) -> Unit){
        // List state for scrolling control
     val listState = rememberLazyListState()
 
+    val scrollScope = rememberCoroutineScope()
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(120.dp)
@@ -35,24 +39,28 @@ fun TimelineDisplay(){
                     state = listState,
                     flingBehavior = rememberSnapFlingBehavior( listState),
                     ){
-                    items(12){ date ->
+                    items(12, key = { it }) { date ->
                         Spacer(Modifier.padding(12.dp))
                         SmallDateSummaryBox(
                             onClick = {
+                                onDateSelected(date)
+                                scrollScope.launch {
+                                    listState.animateScrollToItem(date, -400)
+                                }
                             },
                             alarm = Alarm(
                                 id = 0,
                                 startAlarm = LocalDateTime(
                                     2023,
                                     1,
-                                    1,
+                                    date + 1,
                                     12,
                                     0,
                                 ),
                                 endAlarm = LocalDateTime(
                                     2023,
                                     1,
-                                    1,
+                                    date + 1,
                                     12,
                                     30
                                 )

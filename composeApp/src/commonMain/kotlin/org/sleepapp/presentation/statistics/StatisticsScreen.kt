@@ -41,7 +41,10 @@ class StatisticsScreen : Screen {
                 Spacer(Modifier.height(24.dp))
                 Text("Notes",
                     style = MaterialTheme.typography.titleMedium)
-                SelectedDayNotes()
+                SelectedDayNotes { note ->
+                    navigator.push(NoteScreen, note)
+                }
+
 
             }
         }

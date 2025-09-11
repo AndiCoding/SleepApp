@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import kotlin.plus
@@ -68,6 +69,8 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.sqldelight.coroutines)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+            implementation("io.github.aakira:napier:2.6.1")
+
         }
 
 

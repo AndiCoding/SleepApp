@@ -48,6 +48,22 @@ class AlarmDao(private val queries: AlarmDatabaseQueries) {
         queries.deleteAlarm(alarm.id)
     }
 
+
+    suspend fun getAlarmById(id: Long): Alarm {
+        return queries.getAlarmById(id)
+            .executeAsOne()
+            .let { cacheAlarm ->
+                Alarm(
+                    id = cacheAlarm.id,
+                    startAlarm = stringToLocalDateTime(cacheAlarm.start_time),
+                    endAlarm = stringToLocalDateTime(cacheAlarm.end_time),
+                    interval = cacheAlarm.interval
+                )
+            }
+
+    }
+
+    /*
     fun getAlarmById(id: Long): Flow<Alarm?> {
         return queries.getAlarmById(id)
             .asFlow()
@@ -63,5 +79,7 @@ class AlarmDao(private val queries: AlarmDatabaseQueries) {
                 }
             }.flowOn(Dispatchers.IO)
             }
+
+     */
 
 }

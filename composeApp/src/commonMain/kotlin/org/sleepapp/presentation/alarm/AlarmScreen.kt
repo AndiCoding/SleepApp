@@ -28,7 +28,6 @@ import org.sleepapp.presentation.activealarm.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
-
 class AlarmScreen : Screen {
     @Composable
     override fun Content() {
@@ -76,7 +75,7 @@ class AlarmScreen : Screen {
                         )
                 }
                 Button(onClick = {
-                    alarmViewModel.setAlarmAndNavigate()
+                    alarmViewModel.insertAlarm()
                     navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
 
                 }){
@@ -94,11 +93,8 @@ class AlarmScreen : Screen {
                             StoredAlarm(
                                 alarm = alarm,
                                 {
-                                    alarmViewModel.createAlarmWithSameWakeupTime(alarm.endAlarm)?.let { alarmExists ->
-                                        navigator?.push(ActiveAlarmScreen(
-                                            alarmExists)
-                                        )
-                                    }
+                                    alarmViewModel.updateAlarm(alarm)
+                                    navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
                                 },
                                 { alarmViewModel.deleteAlarm(alarm) })
                         }

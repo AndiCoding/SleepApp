@@ -1,6 +1,7 @@
 package org.sleepapp.presentation.statistics.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ fun SmallDateSummaryBox(
         .height(selected.value.dp)
         .width(64.dp)
         .background(Color.Red)
+        .clickable { onClick() }
     ){
         Column(
             Modifier.fillMaxWidth(),

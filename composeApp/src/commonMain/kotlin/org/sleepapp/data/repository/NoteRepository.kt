@@ -22,6 +22,7 @@ class NoteRepository(private val noteDao: NotesDao) {
             initialValue = emptyList()
         )
 
+
     suspend fun updateNote(note: Note) : Boolean {
         return noteDao.update(note)
     }
@@ -30,7 +31,7 @@ class NoteRepository(private val noteDao: NotesDao) {
        return noteDao.delete(note)
     }
 
-    suspend fun insertNote(note: Note){
+    fun insertNote(note: Note){
         noteDao.insert(note)
     }
 
@@ -38,9 +39,15 @@ class NoteRepository(private val noteDao: NotesDao) {
         return noteDao.getNoteById(id)
     }
 
-    suspend fun getNotesByDate(date: LocalDateTime): List<Note> {
-        return noteDao.getNotesByDate(date)
+    fun getNotesByDate(date: LocalDateTime): StateFlow<List<Note>>{
+        return noteDao.getNotesByDate(date).stateIn(
+            scope = scope,
+            started = SharingStarted.Lazily,
+            initialValue = emptyList()
+        )
     }
+
+
 
 
 

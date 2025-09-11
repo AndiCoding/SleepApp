@@ -36,11 +36,6 @@ fun StoredAlarm(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    val animatedHeight by animateFloatAsState(
-        targetValue = if (isExpanded) 0.3f else 0.15f,
-        label = "height animation"
-    )
-
     Card(
         modifier = Modifier
             .fillMaxWidth()

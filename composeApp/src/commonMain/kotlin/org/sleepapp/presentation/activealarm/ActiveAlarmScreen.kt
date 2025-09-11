@@ -20,7 +20,6 @@ import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.components.NoteItem
 import org.sleepapp.viewmodel.AlarmViewModel
 import org.sleepapp.viewmodel.NotesViewModel
-import kotlin.text.get
 
 class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
 
@@ -62,7 +61,7 @@ class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
                 onValueChange = { newValue ->
                     notesViewModel.setContent(newValue)
                 })
-            Button(onClick = { notesViewModel.insertNote()}){
+            Button(onClick = { notesViewModel.insertNote(alarm.startAlarm)}){
                 Text("Insert Note")
             }
             LazyColumn {
