@@ -37,7 +37,8 @@ class NotesScreen : Screen {
     @Composable
     override fun Content() {
         MaterialTheme {
-            val navigateToNote: Note = ...
+
+
             val notesViewModel = koinViewModel<NotesViewModel>()
 
             Column(
@@ -80,12 +81,19 @@ class NotesScreen : Screen {
 
 
                 }
+                //TODO: Scroll to note on note screen
+                /*
+
+                //val navigateToNote: Note = ...
+
                 LaunchedEffect(navigateToNote) {
                     navigateToNote?.run {
                         scrollState.animateScrollTo(indexOfNavigateToNote)
                     }
 
                 }
+
+                 */
             }
         }
     }

@@ -33,7 +33,7 @@ class StatisticsScreen : Screen {
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.height(24.dp))
-                TimelineDisplay()
+                //TimelineDisplay()
 
                 Spacer(Modifier.height(24.dp))
                 AlarmDetails()
@@ -41,9 +41,13 @@ class StatisticsScreen : Screen {
                 Spacer(Modifier.height(24.dp))
                 Text("Notes",
                     style = MaterialTheme.typography.titleMedium)
+
+                //TODO Choosing notes to show
+                /*
                 SelectedDayNotes { note ->
                     navigator.push(NoteScreen, note)
                 }
+                */
 
 
             }

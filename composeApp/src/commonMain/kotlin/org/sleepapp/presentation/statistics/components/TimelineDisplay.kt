@@ -25,6 +25,8 @@ import kotlinx.datetime.LocalTime
 import org.sleepapp.data.model.Alarm
 
 @Composable
+
+// argument says which day to scroll to
 fun TimelineDisplay(onDateSelected: (Int) -> Unit){
        // List state for scrolling control
     val listState = rememberLazyListState()
