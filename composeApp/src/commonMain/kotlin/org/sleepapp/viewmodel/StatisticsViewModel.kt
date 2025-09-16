@@ -32,7 +32,7 @@ class StatisticsViewModel() : ViewModel() {
 
 
     private fun generateDateList(center: LocalDate): List<LocalDate> =
-        (-5..5).map { offset -> center.plus(DatePeriod(days = offset)) }
+        (-3..3).map { offset -> center.plus(DatePeriod(days = offset)) }
 
 
 
