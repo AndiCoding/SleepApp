@@ -14,18 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.LocalDate
 import org.sleepapp.data.model.Alarm
 
 @Composable
 fun SmallDateSummaryBox(
     onClick: () -> Unit,
-    selected: Boolean = false,
-    alarm: Alarm,
+    date: LocalDate,
 ){
-    val selected = mutableIntStateOf(if(selected) 92 else 80)
+   // val selected = mutableIntStateOf(if(selected) 92 else 80)
 
     Box(modifier = Modifier
-        .height(selected.value.dp)
+        .height(80.dp)
         .width(64.dp)
         .background(Color.Red)
         .clickable { onClick() }
@@ -34,9 +34,8 @@ fun SmallDateSummaryBox(
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(alarm.startAlarm.dayOfWeek.toString().take(3))
-            Text(alarm.startAlarm.dayOfMonth.toString())
-            Text(alarm.startAlarm.month.toString().take(3))
+            Text(date.dayOfMonth.toString())
+            Text(date.month.toString().take(3))
         }
 
     }
