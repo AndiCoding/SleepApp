@@ -48,8 +48,4 @@ class NoteRepository(private val noteDao: NotesDao) {
     }
 
 
-
-
-
-
 }

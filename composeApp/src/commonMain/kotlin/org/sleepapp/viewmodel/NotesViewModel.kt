@@ -7,7 +7,11 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import org.sleepapp.data.model.Note
 import org.sleepapp.data.repository.NoteRepository
 import org.sleepapp.data.util.getNow
@@ -75,4 +79,23 @@ class NotesViewModel(
             noteRepository.deleteNote(note)
         }
     }
+
+    private val _dateHistory = MutableStateFlow(
+        generateDateHistory()
+    )
+    val dateHistory = _dateHistory
+
+    fun generateDateHistory(localDate : LocalDate? = null): List<LocalDate> {
+     return if(localDate === null)  {
+         (0..40).map { offset -> getNow()
+             .date.minus(DatePeriod(days = offset)) }
+     } else {
+         _dateHistory
+         (0..40).map {
+             offset -> localDate.minus(DatePeriod(days = offset))
+         }
+     }
+    }
+
+
 }

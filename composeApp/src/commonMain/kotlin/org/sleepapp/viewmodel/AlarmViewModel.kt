@@ -13,7 +13,9 @@ import kotlinx.datetime.plus
 import org.sleepapp.data.model.Alarm
 import org.sleepapp.data.repository.AlarmRepository
 import org.sleepapp.data.repository.AlarmScheduler
+import org.sleepapp.data.util.calculateNextWakeupDateTime
 import org.sleepapp.data.util.getNow
+import org.sleepapp.data.util.randomAlarm
 
 
 class AlarmViewModel(
@@ -38,6 +40,9 @@ private val alarmRepository: AlarmRepository,
     fun clearCreatedAlarm() {
         _createdAlarm.value = createEmptyAlarm()
     }
+
+    private val _insertedAlarm = MutableStateFlow<Alarm?>(null)
+    val insertedAlarm: StateFlow<Alarm?> get() = _insertedAlarm
 
     private val _currentAlarmEndtime = MutableStateFlow(getNow())
     val currentAlarmEndtime: StateFlow<LocalDateTime> get() = _currentAlarmEndtime
@@ -69,44 +74,19 @@ private val alarmRepository: AlarmRepository,
     }
 
 
-    fun insertAlarm(alarm: Alarm = randomDate()) {
+    fun insertAlarm() {
         viewModelScope.launch {
-            val insertedAlarm = alarmRepository.insertAlarm(alarm)
+            val insertedAlarm = alarmRepository.insertAlarm(_createdAlarm.value)
             val fetchedAlarm = alarmRepository.getAlarmById(insertedAlarm)
-            _createdAlarm.value = fetchedAlarm
-            alarmScheduler.scheduleAlarm(fetchedAlarm)
+            _insertedAlarm.value = fetchedAlarm
+            _createdAlarm.value = createEmptyAlarm()
+            _insertedAlarm.value?.let { alarm ->
+                alarmScheduler.scheduleAlarm(alarm)
+            }
         }
     }
 
 
-    private fun calculateNextWakeupDateTime(wakeupTime: LocalTime): LocalDateTime{
-        val currentDateTime = getNow()
-        var nextWakeupDateTime = LocalDateTime(currentDateTime.date, wakeupTime)
-        if (nextWakeupDateTime <= currentDateTime) {
-            val tomorrow = currentDateTime.date.plus(1, DateTimeUnit.DAY)
-            nextWakeupDateTime = LocalDateTime(tomorrow, wakeupTime)
-        }
 
-        return nextWakeupDateTime
-    }
-
-
-    //TODO: Randomizing date, in order to test if notes are
-    // specific to dates (cleared when exiting an alarm)
-    private fun randomDate(): Alarm {
-
-        val newRandomDate: LocalDateTime = LocalDateTime(
-            date = LocalDate(
-                year = 1970,
-                monthNumber = (1..12).random(),
-                dayOfMonth = (1..28).random()
-            ),
-            time = _currentAlarmEndtime.value.time
-        )
-        return Alarm(
-            startAlarm = newRandomDate,
-            endAlarm = calculateNextWakeupDateTime(newRandomDate.time),
-        )
-    }
 
 }

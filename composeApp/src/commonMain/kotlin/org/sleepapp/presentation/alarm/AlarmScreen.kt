@@ -37,6 +37,13 @@ class AlarmScreen : Screen {
             val navigator = LocalNavigator.current
             val alarmList by alarmViewModel.alarms.collectAsState()
 
+            LaunchedEffect(alarmViewModel.insertedAlarm.value){
+                alarmViewModel.insertedAlarm.value?.let { alarm ->
+                    navigator?.push(ActiveAlarmScreen(alarm))
+                }
+            }
+
+
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,7 +84,6 @@ class AlarmScreen : Screen {
                 Button(onClick = {
                     alarmViewModel.insertAlarm()
                     navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
-
                 }){
                     Text("Activate")
                 }

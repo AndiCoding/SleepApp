@@ -20,7 +20,7 @@ import org.sleepapp.presentation.statistics.StatisticsTab
 fun App() {
     KoinContext {
         MaterialTheme {
-            TabNavigator(tab = StatisticsTab){
+            TabNavigator(tab = NotesTab){
                 Scaffold(
                     content = { paddingValues ->
                         CurrentTab()

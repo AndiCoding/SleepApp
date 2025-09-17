@@ -49,46 +49,42 @@ fun TimelineDisplay(
     val listState = rememberLazyListState()
     val scrollScope = rememberCoroutineScope()
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.2f),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically,
-            state = listState
-            ){
-                itemsIndexed(dateList.value) { index, item ->
-                    val isSelected = selectedDate.value == item
-                    val sizeValue = if (isSelected) 92.dp else 80.dp
-                    Box(modifier = Modifier
-                        .background(Color.Red)
-                        .size(48.dp,sizeValue)
-                        .clickable {
-                            onDateSelected(item)
-                            scrollScope.launch {
-                                listState.animateScrollToItem(index, 0)
-                            }
-
-
-                        },
-
-                    ){
-
-                        Column(
-                            Modifier.fillMaxSize().padding(2.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Text(item.dayOfWeek.toString().take(3)
-                                .lowercase()
-                                .replaceFirstChar { it.uppercase()
-                                })
-                            Text(item.dayOfMonth.toString())
-                            SleepQualityCircle()
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.2f),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        state = listState
+        ){
+            itemsIndexed(dateList.value) { index, item ->
+                val isSelected = selectedDate.value == item
+                val sizeValue = if (isSelected) 92.dp else 80.dp
+                Box(modifier = Modifier
+                    .background(Color.Red)
+                    .size(48.dp,sizeValue)
+                    .clickable {
+                        onDateSelected(item)
+                        scrollScope.launch {
+                            listState.animateScrollToItem(index, 0)
                         }
-
+                    },
+                ){
+                    Column(
+                        Modifier.fillMaxSize().padding(2.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Text(item.dayOfWeek.toString().take(3)
+                            .lowercase()
+                            .replaceFirstChar { it.uppercase()
+                            })
+                        Text(item.dayOfMonth.toString())
+                        SleepQualityCircle()
                     }
 
-                    }
-    }
+                }
+
+            }
+        }
 }

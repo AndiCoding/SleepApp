@@ -1,10 +1,12 @@
 package org.sleepapp.data.util
 
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.random.Random
 
@@ -43,4 +45,18 @@ fun createRandomDateTime(): LocalDateTime {
             randomHours,
             randomMinutes
         )
+
+
 }
+
+fun calculateNextWakeupDateTime(wakeupTime: LocalTime): LocalDateTime{
+    val currentDateTime = getNow()
+    var nextWakeupDateTime = LocalDateTime(currentDateTime.date, wakeupTime)
+    if (nextWakeupDateTime <= currentDateTime) {
+        val tomorrow = currentDateTime.date.plus(1, DateTimeUnit.DAY)
+        nextWakeupDateTime = LocalDateTime(tomorrow, wakeupTime)
+    }
+
+    return nextWakeupDateTime
+}
+
