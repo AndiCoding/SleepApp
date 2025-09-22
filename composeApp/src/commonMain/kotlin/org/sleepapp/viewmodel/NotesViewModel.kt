@@ -20,17 +20,26 @@ class NotesViewModel(
     private val noteRepository: NoteRepository
 ) : ViewModel() {
 
-    private val _notes = noteRepository.noteFlow
-    val notes: StateFlow<List<Note>> get() = _notes
-
+    private val _notes = MutableStateFlow<List<Note?>>(emptyList())
+    val notes: StateFlow<List<Note?>> get() = _notes
 
     private val _notesByDate = MutableStateFlow<List<Note>>(emptyList())
     val notesByDate: StateFlow<List<Note>> get() = _notesByDate
 
+    private val _currentNote = mutableStateOf(emptyNote())
+    val currentNote get()= _currentNote
+
+    private val _dateHistory = MutableStateFlow(
+        generateDateHistory()
+    )
+    val dateHistory = _dateHistory
+
     fun getNotesByDate(localDateTime: LocalDateTime){
         viewModelScope.launch {
-            noteRepository.getNotesByDate(localDateTime).collect { notes ->
-                _notesByDate.value = notes
+            noteRepository.getByDateAsFlow(localDateTime)?.let { flow ->
+                flow.collect { notes ->
+                    _notesByDate.value = notes
+                }
             }
         }
     }
@@ -47,9 +56,6 @@ class NotesViewModel(
             createdAt = getNow(),
         )
 
-
-    private val _currentNote = mutableStateOf(emptyNote())
-    val currentNote get()= _currentNote
 
     fun setTitle(title: String){
         _currentNote.value = _currentNote.value.copy(title = title)
@@ -69,7 +75,6 @@ class NotesViewModel(
         _currentNote.value = _currentNote.value.copy(createdAt = dateForNote)
         viewModelScope.launch {
             noteRepository.insertNote(currentNote.value)
-
             _currentNote.value = emptyNote()
         }
     }
@@ -80,10 +85,7 @@ class NotesViewModel(
         }
     }
 
-    private val _dateHistory = MutableStateFlow(
-        generateDateHistory()
-    )
-    val dateHistory = _dateHistory
+
 
     fun generateDateHistory(localDate : LocalDate? = null): List<LocalDate> {
      return if(localDate === null)  {

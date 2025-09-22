@@ -1,13 +1,13 @@
 package org.sleepapp.di
 
-import app.cash.sqldelight.db.SqlDriver
+import androidx.room.Room
 import org.sleepapp.data.dao.AlarmDao
-import cache.DatabaseDriverFactory
-import org.example.sleepapp.AlarmDatabase
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import org.sleepapp.data.dao.NotesDao
+import org.sleepapp.data.AppDatabase
+import org.sleepapp.data.dao.NoteDao
+import org.sleepapp.data.getRoomDatabase
 import org.sleepapp.data.repository.AlarmRepository
 import org.sleepapp.data.repository.NoteRepository
 import org.sleepapp.getPlatform
@@ -17,19 +17,18 @@ import org.sleepapp.viewmodel.ProfileViewModel
 import org.sleepapp.viewmodel.StatisticsViewModel
 
 
+
 val appModule = module {
 
     // Platform
     factory { getPlatform(this) }
 
     // Database
-    single<SqlDriver> { get<DatabaseDriverFactory>().createDriver() }
-    single { AlarmDatabase(get<SqlDriver>()) }
-    single { get<AlarmDatabase>().alarmDatabaseQueries }
+    singleOf(::getRoomDatabase)
+    single<AlarmDao> {get<AppDatabase>().getAlarmDao()}
+    single<NoteDao> {get<AppDatabase>().getNoteDao()}
 
-    // DAOs and Repository
-    singleOf(::AlarmDao)
-    singleOf(::NotesDao)
+    // Repository
     singleOf(::AlarmRepository)
     singleOf(::NoteRepository)
 

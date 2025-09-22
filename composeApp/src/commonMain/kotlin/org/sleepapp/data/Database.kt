@@ -8,12 +8,14 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.sleepapp.data.dao.AlarmDao
+import org.sleepapp.data.dao.NoteDao
 import org.sleepapp.data.entities.AlarmEntity
 
 @Database(entities = [AlarmEntity::class], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun getDao(): AlarmDao
+    abstract fun getAlarmDao(): AlarmDao
+    abstract fun getNoteDao(): NoteDao
 }
 
 @Suppress("KotlinNoActualForExpect")

@@ -5,16 +5,13 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
@@ -43,7 +40,7 @@ class NotesScreen : Screen {
             val notesViewModel = koinViewModel<NotesViewModel>()
             val dateHistory = notesViewModel.dateHistory
             val notesByDate = notesViewModel.notes.collectAsState()
-                .value.groupBy { it.createdAt.date }
+                .value.groupBy { it?.createdAt?.date }
             val scrollState = rememberLazyListState()
 
 
@@ -98,8 +95,8 @@ class NotesScreen : Screen {
                                     Text(index.toString())
                                     notesByDate[date]?.forEach { note ->
                                         Column {
-                                            Text(note.title)
-                                            Text(note.content)
+                                            Text(note?.title ?: "")
+                                            Text(note?.content ?:  "")
                                         }
                                     }
 

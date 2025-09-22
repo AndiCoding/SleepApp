@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import org.sleepapp.data.util.createRandomDateTime
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.activealarm.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
@@ -33,17 +32,13 @@ class AlarmScreen : Screen {
     override fun Content() {
         MaterialTheme {
             val alarmViewModel = koinViewModel<AlarmViewModel>()
-            val currentAlarm by alarmViewModel.currentAlarmEndtime.collectAsState()
+            val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
             val navigator = LocalNavigator.current
             val alarmList by alarmViewModel.alarms.collectAsState()
 
-            LaunchedEffect(alarmViewModel.insertedAlarm.value){
-                alarmViewModel.insertedAlarm.value?.let { alarm ->
-                    navigator?.push(ActiveAlarmScreen(alarm))
-                }
+            LaunchedEffect(alarmViewModel.latestInsertedAlarmId){
+                navigator?.push(ActiveAlarmScreen(alarmViewModel.currentAlarm.value))
             }
-
-
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,11 +59,11 @@ class AlarmScreen : Screen {
                     ) {
                         Column {
                             Text("Bedtime", modifier = Modifier)
-                            Text(localDateTimetoHourAndMinute(currentAlarm))
+                            Text(localDateTimetoHourAndMinute(currentAlarm.startAlarm))
                         }
                         Column {
                             Text("Wakeup", modifier = Modifier)
-                            Text(localDateTimetoHourAndMinute(currentAlarm))
+                            Text(localDateTimetoHourAndMinute(currentAlarm.endAlarm))
                         }
                     }
 
@@ -83,7 +78,7 @@ class AlarmScreen : Screen {
                 }
                 Button(onClick = {
                     alarmViewModel.insertAlarm()
-                    navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
+                    navigator?.push(ActiveAlarmScreen(alarmViewModel.currentAlarm.value))
                 }){
                     Text("Activate")
                 }
@@ -96,13 +91,15 @@ class AlarmScreen : Screen {
                         itemsIndexed(
                             items = alarmList
                         ) { index, alarm ->
-                            StoredAlarm(
-                                alarm = alarm,
-                                {
-                                    alarmViewModel.updateAlarm(alarm)
-                                    navigator?.push(ActiveAlarmScreen(alarmViewModel.createdAlarm.value))
-                                },
-                                { alarmViewModel.deleteAlarm(alarm) })
+                            alarm?.let {
+                                StoredAlarm(
+                                    alarm = alarm,
+                                    {
+                                        alarmViewModel.updateAlarm(alarm.id)
+                                    },
+                                    { alarmViewModel.deleteAlarm(alarm) })
+                            }
+
                         }
                     }
 

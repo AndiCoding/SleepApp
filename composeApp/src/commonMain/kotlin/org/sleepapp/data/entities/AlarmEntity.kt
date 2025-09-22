@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDateTime
 data class AlarmEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val startAlarm: LocalDateTime,
-    val endAlarm: LocalDateTime,
-    val interval: Long = 5000
+    val startAlarm: String,
+    val endAlarm: String,
+    val interval: Long
 )

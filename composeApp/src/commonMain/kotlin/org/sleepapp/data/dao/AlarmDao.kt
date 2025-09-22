@@ -11,16 +11,16 @@ import org.sleepapp.data.entities.AlarmEntity
 @Dao
 interface AlarmDao {
     @Insert
-    suspend fun insert(item: AlarmEntity)
+    suspend fun insert(item: AlarmEntity): Long
 
     @Query("SELECT * FROM AlarmEntity")
-    suspend fun getAllAsFlow(): Flow<List<AlarmEntity>>
+    fun getAllAsFlow(): Flow<List<AlarmEntity>>
 
     @Update
-    suspend fun update(item: AlarmEntity)
+    suspend fun update(item: AlarmEntity): Int
 
     @Delete
-    suspend fun delete(item: AlarmEntity)
+    suspend fun delete(item: AlarmEntity): Int
 
     @Query("SELECT * FROM AlarmEntity WHERE id = :id")
     suspend fun getById(id: Long): AlarmEntity?

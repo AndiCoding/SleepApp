@@ -9,13 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.text.input.TextFieldValue
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.compose.viewmodel.koinViewModel
 import org.sleepapp.data.model.Alarm
-import org.sleepapp.data.util.createRandomDateTime
-import org.sleepapp.data.util.localDateTimeToString
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.components.NoteItem
 import org.sleepapp.viewmodel.AlarmViewModel
@@ -41,7 +38,6 @@ class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
             }
         }
         Column {
-            Text(localDateTimeToString(alarm.startAlarm))
             Text(localDateTimetoHourAndMinute(alarm.startAlarm))
             Text(localDateTimetoHourAndMinute(alarm.endAlarm))
 
