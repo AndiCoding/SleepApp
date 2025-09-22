@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.toInstant
 import org.sleepapp.AlarmReceiver
@@ -19,11 +20,13 @@ class AndroidAlarmScheduler(private val context: Context): AlarmScheduler {
                 putExtra("EXTRA_MESSAGE", alarm.id)
             }
 
-            val timeTotrigger =  alarm.endAlarm.toInstant(UtcOffset.ZERO).epochSeconds
+            //val timeTotrigger =  alarm.endAlarm.toInstant(UtcOffset.ZERO).epochSeconds
+            val timeToTriggerMillis = alarm.endAlarm.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 
+            println("To trigger time:  ${timeToTriggerMillis.toString()}")
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            timeTotrigger,
+            timeToTriggerMillis,
             PendingIntent.getBroadcast(
                 context,
                 alarm.hashCode(),

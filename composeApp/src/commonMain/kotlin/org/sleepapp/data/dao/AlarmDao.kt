@@ -1,85 +1,29 @@
 package org.sleepapp.data.dao
 
-import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.coroutines.mapToList
-import cache.AlarmDatabaseQueries
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import org.sleepapp.data.model.Alarm
-import org.sleepapp.data.util.createRandomDateTime
-import org.sleepapp.data.util.localDateTimeToString
-import org.sleepapp.data.util.stringToLocalDateTime
+import org.sleepapp.data.entities.AlarmEntity
 
+@Dao
+interface AlarmDao {
+    @Insert
+    suspend fun insert(item: AlarmEntity)
 
-class AlarmDao(private val queries: AlarmDatabaseQueries) {
-    fun getAlarmsFlow(): Flow<List<Alarm>> = queries
-        .getAllAlarms()
-        .asFlow()
-        .mapToList(Dispatchers.IO)
-        .map { cacheAlarms ->
-            cacheAlarms.map { cacheAlarm ->
-                Alarm(
-                    id = cacheAlarm.id,
-                    startAlarm = stringToLocalDateTime( cacheAlarm.start_time),
-                    endAlarm = stringToLocalDateTime(cacheAlarm.end_time),
-                    interval = cacheAlarm.interval
-                )
-            }
-        }
-        .flowOn(Dispatchers.IO)
+    @Query("SELECT * FROM AlarmEntity")
+    suspend fun getAllAsFlow(): Flow<List<AlarmEntity>>
 
-    fun insert(alarm: Alarm): Long{
-        val startAlarm = localDateTimeToString(alarm.startAlarm)
-        val endAlarm = localDateTimeToString(alarm.endAlarm)
-        queries.insertAlarm(startAlarm, endAlarm, alarm.interval)
-        return queries.lastInsertedRowId().executeAsOne()
-    }
+    @Update
+    suspend fun update(item: AlarmEntity)
 
-    fun update(alarm: Alarm) {
-        val startAlarm = localDateTimeToString(alarm.startAlarm)
-        val endAlarm = localDateTimeToString(alarm.endAlarm)
-        queries.updateAlarm(startAlarm, endAlarm, alarm.interval, alarm.id)
-    }
+    @Delete
+    suspend fun delete(item: AlarmEntity)
 
-    fun delete(alarm: Alarm) {
-        queries.deleteAlarm(alarm.id)
-    }
+    @Query("SELECT * FROM AlarmEntity WHERE id = :id")
+    suspend fun getById(id: Long): AlarmEntity?
 
-
-    suspend fun getAlarmById(id: Long): Alarm {
-        return queries.getAlarmById(id)
-            .executeAsOne()
-            .let { cacheAlarm ->
-                Alarm(
-                    id = cacheAlarm.id,
-                    startAlarm = stringToLocalDateTime(cacheAlarm.start_time),
-                    endAlarm = stringToLocalDateTime(cacheAlarm.end_time),
-                    interval = cacheAlarm.interval
-                )
-            }
-
-    }
-
-    /*
-    fun getAlarmById(id: Long): Flow<Alarm?> {
-        return queries.getAlarmById(id)
-            .asFlow()
-            .map { it.executeAsOneOrNull() }
-            .map { alarmById ->
-                alarmById?.let {
-                    Alarm(
-                        id = alarmById.id,
-                        startAlarm = stringToLocalDateTime(alarmById.start_time),
-                        endAlarm = stringToLocalDateTime(alarmById.end_time),
-                        interval = alarmById.interval
-                    )
-                }
-            }.flowOn(Dispatchers.IO)
-            }
-
-     */
 
 }

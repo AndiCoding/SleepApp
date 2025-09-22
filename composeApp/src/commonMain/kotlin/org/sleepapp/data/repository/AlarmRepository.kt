@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted
-import org.sleepapp.data.model.Alarm
 
 class AlarmRepository(private val alarmDao: AlarmDao) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)

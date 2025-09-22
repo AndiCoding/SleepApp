@@ -10,9 +10,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.devtools.ksp")
-    alias(libs.plugins.sqlDelight)
-
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -32,6 +31,8 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             freeCompilerArgs += listOf("-Xbinary=bundleId=org.sleepapp.composeapp")
+            linkerOpts.add("-lsqlite3")
+
 
         }
     }
@@ -42,11 +43,10 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
-            implementation(libs.sqldelight.android)
+            implementation(libs.androidx.room.sqlite.wrapper)
         }
 
         iosMain.dependencies {
-            implementation(libs.sqldelight.native)
         }
 
 
@@ -62,15 +62,14 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.koin.compose.viewmodel.nav)
             implementation(libs.koin.core)
-            implementation(libs.sqlite.bundled)
             implementation(libs.voyager.navigator)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
-            implementation(libs.sqldelight.coroutines)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
             implementation("io.github.aakira:napier:2.6.1")
-
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
 
 
@@ -111,13 +110,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
     implementation(libs.voyager.screenmodel)
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
 }
 
-sqldelight {
-    databases {
-        create("AlarmDatabase") {
-            packageName.set("org.example.sleepapp")
-            schemaOutputDirectory = file("src/commonMain/sqldelight/cache")
-        }
-    }
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
