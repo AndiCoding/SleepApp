@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import cafe.adriel.voyager.core.screen.Screen
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import org.sleepapp.presentation.statistics.components.AlarmDetails
@@ -24,11 +23,8 @@ import org.sleepapp.presentation.statistics.components.TimelineDisplay
 import org.sleepapp.viewmodel.NotesViewModel
 import org.sleepapp.viewmodel.StatisticsViewModel
 
-
-class StatisticsScreen : Screen {
-    @Composable
-    override fun Content() {
-        MaterialTheme {
+@Composable
+fun StatisticsScreen() {
             val statisticsViewModel = koinViewModel<StatisticsViewModel>()
             val notesViewModel = koinViewModel<NotesViewModel>()
             val selectedDate  = statisticsViewModel.selectedDate.collectAsState()
@@ -87,5 +83,4 @@ class StatisticsScreen : Screen {
 
             }
         }
-    }
-}
+

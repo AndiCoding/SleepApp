@@ -9,26 +9,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.compose.viewmodel.koinViewModel
-import org.sleepapp.data.model.Alarm
-import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.components.NoteItem
-import org.sleepapp.viewmodel.AlarmViewModel
+import org.sleepapp.viewmodel.ActiveAlarmViewModel
 import org.sleepapp.viewmodel.NotesViewModel
 
-class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
-
-    @Composable
-    override fun Content(){
-        val alarmViewmodel = koinViewModel<AlarmViewModel>()
+@Composable
+fun ActiveAlarmScreen(alarmId: Long){
+        val activeAlarmViewModel = koinViewModel<ActiveAlarmViewModel>()
         val notesViewModel = koinViewModel<NotesViewModel>()
-        val navigatior = LocalNavigator.current
         val notesByDate = notesViewModel.notesByDate.collectAsState()
+        val activeAlarm = activeAlarmViewModel.activeAlarm.collectAsState()
 
-        LaunchedEffect(alarm){
-            notesViewModel.getNotesByDate(alarm.startAlarm)
+        LaunchedEffect(Unit) {
+            activeAlarmViewModel.getAlarmById(alarmId)
+        }
+
+        LaunchedEffect(activeAlarm.value){
+            activeAlarm.value?.let { alarm ->
+                notesViewModel.getNotesByDate(alarm.startAlarm)
+            }
         }
 
         // Clear notes when screen is destroyed
@@ -38,13 +38,10 @@ class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
             }
         }
         Column {
-            Text(localDateTimetoHourAndMinute(alarm.startAlarm))
-            Text(localDateTimetoHourAndMinute(alarm.endAlarm))
-
+            Text(activeAlarm.value?.startAlarm.toString())
+            Text(activeAlarm.value?.endAlarm.toString())
             Text("Active alarm")
-            Button(onClick = {navigatior?.pop()
-                alarmViewmodel.clearCreatedAlarm()
-            }){
+            Button(onClick = {}){
                 Text("Return to alarm screen")
             }
             TextField(
@@ -57,17 +54,18 @@ class ActiveAlarmScreen(private val alarm: Alarm) : Screen {
                 onValueChange = { newValue ->
                     notesViewModel.setContent(newValue)
                 })
-            Button(onClick = { notesViewModel.insertNote(alarm.startAlarm)}){
-                Text("Insert Note")
-            }
-            LazyColumn {
-                items(notesByDate.value.size) { index ->
-                    NoteItem(note = notesByDate.value[index])
+            activeAlarm.value?.let { alarm ->
+                Button(onClick = { notesViewModel.insertNote(alarm.startAlarm)}){
+                    Text("Insert Note")
+                }
+                LazyColumn {
+                    items(notesByDate.value.size) { index ->
+                        NoteItem(note = notesByDate.value[index])
+                    }
                 }
             }
+
         }
 
     }
 
-
-}

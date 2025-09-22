@@ -11,6 +11,7 @@ import org.sleepapp.data.getRoomDatabase
 import org.sleepapp.data.repository.AlarmRepository
 import org.sleepapp.data.repository.NoteRepository
 import org.sleepapp.getPlatform
+import org.sleepapp.viewmodel.ActiveAlarmViewModel
 import org.sleepapp.viewmodel.AlarmViewModel
 import org.sleepapp.viewmodel.NotesViewModel
 import org.sleepapp.viewmodel.ProfileViewModel
@@ -37,5 +38,7 @@ val appModule = module {
     viewModelOf(::StatisticsViewModel)
     viewModelOf(::NotesViewModel)
     viewModelOf(::ProfileViewModel)
+    viewModelOf(::ActiveAlarmViewModel)
+
 
 }

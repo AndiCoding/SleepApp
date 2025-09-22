@@ -1,8 +1,5 @@
-import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import kotlin.plus
-
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -61,13 +58,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.koin.compose.viewmodel.nav)
             implementation(libs.koin.core)
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.tab.navigator)
-            implementation(libs.voyager.transitions)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
-            implementation("io.github.aakira:napier:2.6.1")
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
         }
 
 
@@ -107,7 +102,6 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
-    implementation(libs.voyager.screenmodel)
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)

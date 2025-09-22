@@ -29,14 +29,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
-import cafe.adriel.voyager.core.screen.Screen
 import org.sleepapp.viewmodel.NotesViewModel
 
-
-class NotesScreen : Screen {
-    @Composable
-    override fun Content() {
-        MaterialTheme {
+@Composable
+fun NotesScreen() {
             val notesViewModel = koinViewModel<NotesViewModel>()
             val dateHistory = notesViewModel.dateHistory
             val notesByDate = notesViewModel.notes.collectAsState()
@@ -123,5 +119,3 @@ class NotesScreen : Screen {
                  */
             }
         }
-    }
-}

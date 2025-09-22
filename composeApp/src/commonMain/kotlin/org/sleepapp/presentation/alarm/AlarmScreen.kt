@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,24 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
-import org.sleepapp.presentation.activealarm.ActiveAlarmScreen
 import org.sleepapp.presentation.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
-class AlarmScreen : Screen {
-    @Composable
-    override fun Content() {
-        MaterialTheme {
+@Composable
+fun AlarmScreen() {
             val alarmViewModel = koinViewModel<AlarmViewModel>()
             val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
-            val navigator = LocalNavigator.current
             val alarmList by alarmViewModel.alarms.collectAsState()
 
             LaunchedEffect(alarmViewModel.latestInsertedAlarmId){
-                navigator?.push(ActiveAlarmScreen(alarmViewModel.currentAlarm.value))
             }
 
             Column(modifier = Modifier.fillMaxSize(),
@@ -78,7 +70,6 @@ class AlarmScreen : Screen {
                 }
                 Button(onClick = {
                     alarmViewModel.insertAlarm()
-                    navigator?.push(ActiveAlarmScreen(alarmViewModel.currentAlarm.value))
                 }){
                     Text("Activate")
                 }
@@ -105,5 +96,3 @@ class AlarmScreen : Screen {
 
             }
         }
-    }
-}

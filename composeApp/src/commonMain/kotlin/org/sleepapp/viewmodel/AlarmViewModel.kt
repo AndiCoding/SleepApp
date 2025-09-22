@@ -15,10 +15,8 @@ import org.sleepapp.data.util.getNow
 
 class AlarmViewModel(
 private val alarmRepository: AlarmRepository,
-    private val alarmScheduler: AlarmScheduler,
+    //private val alarmScheduler: AlarmScheduler,
 ) : ViewModel() {
-
-
     private val _alarms = MutableStateFlow<List<Alarm?>>(emptyList())
     val alarms: StateFlow<List<Alarm?>> get() = _alarms
 
@@ -67,8 +65,6 @@ private val alarmRepository: AlarmRepository,
                 alarmRepository.updateAlarm(_currentAlarm.value)
             }
         }
-
-
     }
 
     fun deleteAlarm(alarmItem: Alarm) {
@@ -78,6 +74,8 @@ private val alarmRepository: AlarmRepository,
         }
     }
 
+
+
     fun insertAlarm() {
         viewModelScope.launch {
             val insertedAlarmId = alarmRepository.insertAlarm(_currentAlarm.value)
@@ -85,7 +83,7 @@ private val alarmRepository: AlarmRepository,
             _currentAlarm.value = createEmptyAlarm()
             insertedAlarmId?.let { id ->
                 alarmRepository.getAlarmById(id)?.let { alarm ->
-                    alarmScheduler.scheduleAlarm(alarm)
+                   // alarmScheduler.scheduleAlarm(alarm)
                 }
             }
         }

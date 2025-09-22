@@ -1,14 +1,13 @@
 package org.sleepapp.di
 
-import cache.Database
-import cache.DatabaseDriverFactory
-import cache.IOSDatabaseDriverFactory
+import androidx.room.RoomDatabase
 import org.koin.dsl.module
-import org.sleepapp.data.repository.AlarmScheduler
-import org.sleepapp.data.repository.IOSAlarmScheduler
+import org.sleepapp.data.AppDatabase
+import org.sleepapp.data.getDatabaseBuilder
 
 val iosDatabaseModule = module {
-    single<DatabaseDriverFactory>{ IOSDatabaseDriverFactory() }
-    single{Database(databaseDriverFactory = get<DatabaseDriverFactory>())}
+    single<RoomDatabase.Builder<AppDatabase>> {
+        getDatabaseBuilder()
+    }
     //single<AlarmScheduler>{ IOSAlarmScheduler()}
 }
