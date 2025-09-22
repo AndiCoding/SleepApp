@@ -1,8 +1,6 @@
 package org.sleepapp.data.model
 
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 data class Note(
     val id:Long = 0,

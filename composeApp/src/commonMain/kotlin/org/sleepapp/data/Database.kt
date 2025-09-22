@@ -10,8 +10,9 @@ import kotlinx.coroutines.IO
 import org.sleepapp.data.dao.AlarmDao
 import org.sleepapp.data.dao.NoteDao
 import org.sleepapp.data.entities.AlarmEntity
+import org.sleepapp.data.entities.NoteEntity
 
-@Database(entities = [AlarmEntity::class], version = 1)
+@Database(entities = [AlarmEntity::class, NoteEntity::class], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getAlarmDao(): AlarmDao

@@ -9,9 +9,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.20"
     alias(libs.plugins.ksp)
-    alias(libs.plugins.androidx.room)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -63,7 +62,6 @@ kotlin {
             implementation(libs.koin.compose.viewmodel.nav)
             implementation(libs.koin.core)
             implementation(libs.voyager.navigator)
-            implementation(libs.kotlinx.serialization.json)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
