@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.alarm.components
+package org.sleepapp.presentation.screens.alarm.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -21,7 +22,7 @@ actual fun InputTimeSelector(
     onConfirm: (time: LocalDateTime) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val currentTime = kotlinx.datetime.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
 
     val timePickerState = rememberTimePickerState(

@@ -80,9 +80,9 @@ private val alarmRepository: AlarmRepository,
         viewModelScope.launch {
             val insertedAlarmId = alarmRepository.insertAlarm(_currentAlarm.value)
             _latestInsertedAlarmId.value = insertedAlarmId
-            _currentAlarm.value = createEmptyAlarm()
             insertedAlarmId?.let { id ->
                 alarmRepository.getAlarmById(id)?.let { alarm ->
+                    _currentAlarm.value = alarm
                    // alarmScheduler.scheduleAlarm(alarm)
                 }
             }

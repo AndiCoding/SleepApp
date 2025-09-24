@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.alarm
+package org.sleepapp.presentation.screens.alarm
 
 import StoredAlarm
 import androidx.compose.foundation.layout.Arrangement
@@ -12,25 +12,29 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
-import org.sleepapp.presentation.alarm.components.InputTimeSelector
+import org.sleepapp.presentation.navigation.ActiveAlarm
+import org.sleepapp.presentation.screens.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
 @Composable
-fun AlarmScreen() {
+fun AlarmScreen(
+    navController: NavHostController
+) {
+
             val alarmViewModel = koinViewModel<AlarmViewModel>()
             val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
             val alarmList by alarmViewModel.alarms.collectAsState()
-
-            LaunchedEffect(alarmViewModel.latestInsertedAlarmId){
-            }
+            val coroutineScope = rememberCoroutineScope()
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,7 +73,16 @@ fun AlarmScreen() {
                         )
                 }
                 Button(onClick = {
-                    alarmViewModel.insertAlarm()
+                    coroutineScope.launch {
+                        try {
+                            alarmViewModel.insertAlarm()
+                            navController.navigate(ActiveAlarm(
+                                alarmViewModel.currentAlarm.value.id
+                            ))
+                        } catch (e: Exception){
+                            e.printStackTrace()
+                        }
+                    }
                 }){
                     Text("Activate")
                 }
@@ -86,7 +99,11 @@ fun AlarmScreen() {
                                 StoredAlarm(
                                     alarm = alarm,
                                     {
-                                        alarmViewModel.updateAlarm(alarm.id)
+                                        coroutineScope.launch {
+                                            alarmViewModel.updateAlarm(alarm.id)
+                                            navController.navigate(ActiveAlarm(alarm.id))
+                                        }
+
                                     },
                                     { alarmViewModel.deleteAlarm(alarm) })
                             }

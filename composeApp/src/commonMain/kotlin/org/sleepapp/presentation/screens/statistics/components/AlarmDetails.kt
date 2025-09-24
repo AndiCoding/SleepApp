@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.statistics.components
+package org.sleepapp.presentation.screens.statistics.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

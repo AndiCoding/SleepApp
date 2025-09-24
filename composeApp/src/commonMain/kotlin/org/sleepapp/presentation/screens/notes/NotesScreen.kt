@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.notes
+package org.sleepapp.presentation.screens.notes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

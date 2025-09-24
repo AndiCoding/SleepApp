@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.alarm.components
+package org.sleepapp.presentation.screens.alarm.components
 
 import androidx.compose.foundation.background
 import androidx.compose.material3.Icon

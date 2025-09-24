@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.profile
+package org.sleepapp.presentation.screens.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

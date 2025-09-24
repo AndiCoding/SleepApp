@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    id("org.jetbrains.kotlin.plugin.serialization") version libs.versions.kotlin.get()
+
 }
 
 kotlin {
@@ -102,6 +104,8 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
+    implementation(libs.kotlinx.serialization.json)
+
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
     add("kspIosX64", libs.androidx.room.compiler)

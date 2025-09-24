@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.alarm.components
+package org.sleepapp.presentation.screens.alarm.components
 
 import androidx.compose.runtime.Composable
 import kotlin.math.PI

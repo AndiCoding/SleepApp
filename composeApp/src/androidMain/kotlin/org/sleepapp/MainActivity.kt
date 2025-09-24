@@ -3,6 +3,7 @@ package org.sleepapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.sleepapp.di.androidDatabaseModule
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
             androidLogger()
         }
 
+        enableEdgeToEdge()
         setContent{
             App()
         }

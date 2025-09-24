@@ -1,4 +1,4 @@
-package org.sleepapp.presentation.statistics
+package org.sleepapp.presentation.screens.statistics
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import org.sleepapp.presentation.statistics.components.AlarmDetails
-import org.sleepapp.presentation.statistics.components.TimelineDisplay
+import org.sleepapp.presentation.screens.statistics.components.AlarmDetails
+import org.sleepapp.presentation.screens.statistics.components.TimelineDisplay
 import org.sleepapp.viewmodel.NotesViewModel
 import org.sleepapp.viewmodel.StatisticsViewModel
 

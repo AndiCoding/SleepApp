@@ -13,7 +13,7 @@ class ActiveAlarmViewModel(private val alarmRepository: AlarmRepository ) : View
     val activeAlarm get() = _activeAlarm
 
 
-    fun getAlarmById(alarmId: Long){
+    fun getAlarmById(alarmId: Long) {
         viewModelScope.launch {
             alarmRepository.getAlarmById(alarmId)?.let { alarm ->
                 _activeAlarm.value = alarm
