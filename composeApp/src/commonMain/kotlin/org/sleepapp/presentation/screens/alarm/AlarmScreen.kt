@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
 import org.sleepapp.presentation.navigation.ActiveAlarm
-import org.sleepapp.presentation.screens.alarm.components.InputTimeSelector
 import org.sleepapp.viewmodel.AlarmViewModel
 
 @Composable
@@ -63,6 +62,8 @@ fun AlarmScreen(
                         }
                     }
 
+                    //ClockTemplate()
+                    /*
                         InputTimeSelector(
                             onConfirm = {
                                 currentAlarm ->
@@ -71,6 +72,8 @@ fun AlarmScreen(
                             },
                             onDismiss = { /*TODO*/ }
                         )
+
+                     */
                 }
                 Button(onClick = {
                     coroutineScope.launch {
