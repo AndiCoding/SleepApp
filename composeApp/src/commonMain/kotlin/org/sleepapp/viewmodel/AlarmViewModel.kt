@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import org.sleepapp.data.model.Alarm
 import org.sleepapp.data.repository.AlarmRepository
 import org.sleepapp.data.repository.AlarmScheduler
@@ -25,6 +26,13 @@ private val alarmRepository: AlarmRepository,
 
     private val _latestInsertedAlarmId = MutableStateFlow<Long?>(null)
     val latestInsertedAlarmId: StateFlow<Long?> get() = _latestInsertedAlarmId
+
+    private val _selectedTime = MutableStateFlow<LocalTime>(getNow().time)
+    val selectedTime = _selectedTime
+    fun updateSelectedTime(localTime: LocalTime) {
+        _selectedTime.value = localTime
+    }
+
 
     init {
         viewModelScope.launch {

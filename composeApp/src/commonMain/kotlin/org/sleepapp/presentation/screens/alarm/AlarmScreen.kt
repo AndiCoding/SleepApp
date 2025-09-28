@@ -14,14 +14,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import org.sleepapp.data.util.getNow
 import org.sleepapp.data.util.localDateTimetoHourAndMinute
+import org.sleepapp.presentation.components.Clock
 import org.sleepapp.presentation.navigation.ActiveAlarm
 import org.sleepapp.viewmodel.AlarmViewModel
 
@@ -34,6 +39,10 @@ fun AlarmScreen(
             val currentAlarm by alarmViewModel.currentAlarm.collectAsState()
             val alarmList by alarmViewModel.alarms.collectAsState()
             val coroutineScope = rememberCoroutineScope()
+            val selectedTime by alarmViewModel.selectedTime.collectAsState()
+
+
+
 
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,19 +71,12 @@ fun AlarmScreen(
                         }
                     }
 
-                    //ClockTemplate()
-                    /*
-                        InputTimeSelector(
-                            onConfirm = {
-                                currentAlarm ->
-                                alarmViewModel.setCurrentAlarmEndtime(currentAlarm)
-
-                            },
-                            onDismiss = { /*TODO*/ }
-                        )
-
-                     */
+                    Clock(
+                        initialTime = getNow().time,
+                        onClockChange = {time -> alarmViewModel.updateSelectedTime(time)}
+                    )
                 }
+                Text("Selected Time: ${selectedTime.hour}:${selectedTime.minute}")
                 Button(onClick = {
                     coroutineScope.launch {
                         try {
